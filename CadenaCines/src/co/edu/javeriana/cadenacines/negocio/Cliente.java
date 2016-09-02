@@ -62,12 +62,5 @@ public class Cliente {
 	public long getId() {
 		return id;
 	}
-	
-	
-
 
 }
-	
-	
-	
-	

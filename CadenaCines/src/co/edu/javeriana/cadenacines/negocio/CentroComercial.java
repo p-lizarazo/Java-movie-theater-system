@@ -1,16 +1,16 @@
 package co.edu.javeriana.cadenacines.negocio;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CentroComercial {
 	
 	private String nombre;
-	private List<Cine> cines;
+	private Set<Cine> cines;
 	
 	public CentroComercial(String nombre) {
 		this.nombre = nombre;
-		this.cines = new ArrayList<Cine>();
+		this.cines = new HashSet<Cine>();
 	}
 
 	@Override
@@ -26,11 +26,11 @@ public class CentroComercial {
 		this.nombre = nombre;
 	}
 
-	public List<Cine> getCines() {
+	public Set<Cine> getCines() {
 		return cines;
 	}
 
-	public void setCines(List<Cine> cines) {
+	public void setCines(Set<Cine> cines) {
 		this.cines = cines;
 	}
 	

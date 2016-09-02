@@ -55,8 +55,5 @@ public class CadenaCines {
 		this.centros = centros;
 	}
 	
-	
-	
-	
 
 }

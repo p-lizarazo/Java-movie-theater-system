@@ -10,20 +10,46 @@ public class Funcion {
 	private long id;
 	private long tarifa;
 	private LocalDateTime fecha;
+	private Cine cine;
+	private Pelicula pelicula;
 	private List<Boleta> boletas;
 	
-	public Funcion(long id, long tarifa, LocalDateTime fecha) {
+	public Funcion(long tarifa, LocalDateTime fecha,Cine cine,Pelicula pelicula) {
 		this.id = CONSECUTIVO;
 		CONSECUTIVO++;
 		this.tarifa = tarifa;
 		this.fecha = fecha;
+		this.cine = cine;
 		this.boletas = new ArrayList<Boleta>();
+		this.pelicula = pelicula;
 	
 	}
 
 	@Override
 	public String toString() {
 		return "Funcion [id=" + id + ", tarifa=" + tarifa + ", fecha=" + fecha + "]";
+	}
+	
+	
+
+	public Cine getCine() {
+		return cine;
+	}
+
+	public void setCine(Cine cine) {
+		this.cine = cine;
+	}
+
+	public Pelicula getPelicula() {
+		return pelicula;
+	}
+
+	public void setPelicula(Pelicula pelicula) {
+		this.pelicula = pelicula;
+	}
+
+	public void setBoletas(List<Boleta> boletas) {
+		this.boletas = boletas;
 	}
 
 	public long getTarifa() {
@@ -42,19 +68,17 @@ public class Funcion {
 		this.fecha = fecha;
 	}
 
-	public List<Boleta> getFuncionesPeliculas() {
-		return funcionesPeliculas;
+	public List<Boleta> getBoletas() {
+		return boletas;
 	}
 
-	public void setFuncionesPeliculas(List<Boleta> funcionesPeliculas) {
-		this.funcionesPeliculas = funcionesPeliculas;
+	public void setFuncionesPeliculas(List<Boleta> boletas) {
+		this.boletas = boletas;
 	}
 
 	public long getId() {
 		return id;
 	}
-	
-	
 	
 
 }

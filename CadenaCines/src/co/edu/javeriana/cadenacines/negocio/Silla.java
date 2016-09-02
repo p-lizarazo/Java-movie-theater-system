@@ -4,19 +4,18 @@ public class Silla {
 	
 	private String fila;
 	private int numero;
-	private Boleta boleta;
 	
 	
 	public Silla(String fila, int numero, Boleta boleta) {
 		this.fila = fila;
 		this.numero = numero;
-		this.boleta = boleta;
+	
 	}
 
 
 	@Override
 	public String toString() {
-		return "Silla [fila=" + fila + ", numero=" + numero + ", boleta=" + boleta + "]";
+		return "Silla [fila=" + fila + ", numero=" + numero + "]";
 	}
 
 
@@ -38,19 +37,6 @@ public class Silla {
 	public void setNumero(int numero) {
 		this.numero = numero;
 	}
-
-
-	public Boleta getBoleta() {
-		return boleta;
-	}
-
-
-	public void setBoleta(Boleta boleta) {
-		this.boleta = boleta;
-	}
-	
-	
-	
 	
 
 }

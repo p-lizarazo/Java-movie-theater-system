@@ -9,10 +9,11 @@ public class Cine {
 	private long id;
 	private String sala;
 	private long capacidad;
+	private CentroComercial centro;
 	private List<Funcion> funciones;
 	private List<Silla> sillas;
 	
-	public Cine(long id, String sala, long capacidad) {
+	public Cine(String sala, long capacidad, CentroComercial centro) {
 		
 		this.id = CONSECUTIVO;
 		CONSECUTIVO++;
@@ -20,6 +21,7 @@ public class Cine {
 		this.capacidad = capacidad;
 		this.funciones = new ArrayList<Funcion>();
 		this.sillas = new ArrayList<Silla>();
+		this.centro = centro;
 	}
 
 	@Override
@@ -63,10 +65,6 @@ public class Cine {
 	public long getId() {
 		return id;
 	}
-	
-	
-	
-	
 	
 
 }

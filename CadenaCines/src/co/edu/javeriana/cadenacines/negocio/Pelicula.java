@@ -64,7 +64,5 @@ public class Pelicula {
 		this.funciones = funciones;
 	}
 	
-	
-	
 
 }
