@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 //WTF
 public class Boleta {
-	
+	//PERE
 	private boolean comprada;
 	private Cliente client;
 	private List<Silla> sillas;
