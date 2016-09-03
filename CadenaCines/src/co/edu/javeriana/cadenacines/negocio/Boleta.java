@@ -1,6 +1,6 @@
 package co.edu.javeriana.cadenacines.negocio;
 
-
+//Prueba
 public class Boleta {
 	
 	private boolean comprada;
