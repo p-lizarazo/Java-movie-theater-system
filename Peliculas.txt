@@ -1,0 +1,6 @@
+#--PELICULAS:
+#--codigo------nombre---------------------descripcion
+1122 *El secreto de sus ojos *trama policiaca con mucho amor
+3356 *El Hobbit *complementa el Senor de los anillos
+2250 *Doctor Zhivago *sobre la revolucion en Rusia
+#FIN

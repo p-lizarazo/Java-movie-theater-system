@@ -79,7 +79,9 @@ public class Cliente {
 			return false;
 		return true;
 	}
-
+	
+	// Metodos sobreescritos para poder comparar los correos de los clientes y no existan repetidos al agregar
+	
 	@Override
 	public String toString() {
 		return "Cliente [id=" + id + ", nombre=" + nombre + ", email=" + email + "]";

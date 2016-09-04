@@ -12,13 +12,14 @@ public class CadenaCines {
 
 	private String nombre;
 	private List<CentroComercial> centros;
-	private List<Pelicula> peliculas;
+	private Collection<Pelicula> peliculas;
 	private Collection<Cliente> clientes;
+	// Cambio de List a Collection para crear un HashSet
 	
 	public CadenaCines(String nombre) {
 		this.nombre = nombre;
 		this.centros = new ArrayList<CentroComercial>();
-		this.peliculas = new ArrayList<Pelicula>();
+		this.peliculas = new HashSet<Pelicula>();
 		this.clientes = new HashSet<Cliente>();
 	}
 
@@ -28,11 +29,11 @@ public class CadenaCines {
 	}
 	
 
-	public List<Pelicula> getPeliculas() {
+	public Collection<Pelicula> getPeliculas() {
 		return peliculas;
 	}
 
-	public void setPeliculas(List<Pelicula> peliculas) {
+	public void setPeliculas(Collection<Pelicula> peliculas) {
 		this.peliculas = peliculas;
 	}
 
@@ -65,6 +66,13 @@ public class CadenaCines {
 		
 		Cliente a =new Cliente (nombre,email);
 		this.clientes.add(a);
+		
+	}
+	
+	public void agregarPeliculas(long codigo, String nombre, String descripcion){
+		
+		Pelicula a = new Pelicula(codigo,nombre,descripcion);
+		this.peliculas.add(a);
 		
 	}
 	
