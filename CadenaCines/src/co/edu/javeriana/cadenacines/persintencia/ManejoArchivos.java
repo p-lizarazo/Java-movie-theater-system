@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-import java.lang.Throwable;
 
 import co.edu.javeriana.cadenacines.negocio.CadenaCines;
 
