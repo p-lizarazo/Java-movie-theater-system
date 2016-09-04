@@ -1,8 +1,11 @@
 package co.edu.javeriana.cadenacines.persintencia;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+
+import co.edu.javeriana.cadenacines.negocio.CadenaCines;
 
 public class ManejoArchivos {
 	
@@ -44,6 +47,37 @@ public class ManejoArchivos {
 			
 		} catch (Exception e) {
 			// TODO: handle exception
+		}
+		
+	}
+	
+	public static void ingresarClientes(String nombre,CadenaCines cadena){
+		
+		File inFile = new File("./" + nombre);
+		Scanner  input = null;
+		String linea;
+		StringTokenizer token;
+		try {
+			input = new Scanner(inFile);
+			input.nextLine();
+			linea=input.nextLine();
+			if(!linea.equals("#FIN") ){
+				linea=input.nextLine();
+				while(!linea.equals("#FIN")){
+					
+					token=new StringTokenizer(linea,"*");
+					cadena.agregarClientes(token.nextToken().trim(),token.nextToken().trim());
+					linea=input.nextLine();
+				}
+			}
+			
+			
+			
+			
+		} catch(FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			input.close();
 		}
 		
 	}
