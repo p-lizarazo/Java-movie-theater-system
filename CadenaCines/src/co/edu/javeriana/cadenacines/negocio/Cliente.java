@@ -12,6 +12,7 @@ public class Cliente {
 	private List<Boleta> boletas;
 	
 	
+	
 	public Cliente(String nombre, String email) {
 		this.id = CONSECUTIVO;
 		CONSECUTIVO++;

@@ -87,6 +87,11 @@ public class Pelicula {
 			return false;
 		return true;
 	}
+<<<<<<< HEAD
+=======
+	
+	
+>>>>>>> 6e25eed85172926213a2fc58a6bdac3077fcd2f7
 	
 
 }

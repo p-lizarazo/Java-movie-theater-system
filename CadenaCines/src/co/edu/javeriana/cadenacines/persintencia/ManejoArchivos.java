@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 import co.edu.javeriana.cadenacines.negocio.CadenaCines;
+<<<<<<< HEAD
 import co.edu.javeriana.cadenacines.negocio.CentroComercial;
 import co.edu.javeriana.cadenacines.negocio.Cine;
 import co.edu.javeriana.cadenacines.negocio.Silla;
@@ -15,6 +16,14 @@ public class ManejoArchivos {
 	
 	
 	public void agregarCentrosCinesSilla(CadenaCines cadenaC){
+=======
+
+public class ManejoArchivos {
+	
+		
+	
+	public void agregarCentrosCinesSilla(){
+>>>>>>> 6e25eed85172926213a2fc58a6bdac3077fcd2f7
 		Scanner scanner = new Scanner(System.in);
 		String nomArchivo = scanner.nextLine();
 		File inFile = new File("./", nomArchivo);
@@ -48,9 +57,14 @@ public class ManejoArchivos {
 					}
 					line = input.nextLine().trim();
 				}
+<<<<<<< HEAD
 				linea = input.nextLine();
 			}
 			
+=======
+				
+			}
+>>>>>>> 6e25eed85172926213a2fc58a6bdac3077fcd2f7
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			 
@@ -63,7 +77,11 @@ public class ManejoArchivos {
 	
 	
 	public void ingresarClientes(String nombre,CadenaCines cadena){
+<<<<<<< HEAD
 		
+=======
+	
+>>>>>>> 6e25eed85172926213a2fc58a6bdac3077fcd2f7
 		File inFile = new File("./" + nombre);
 		Scanner  input = null;
 		String linea;
@@ -122,6 +140,11 @@ public class ManejoArchivos {
 		
 		
 	}
+<<<<<<< HEAD
+=======
+	
+	
+>>>>>>> 6e25eed85172926213a2fc58a6bdac3077fcd2f7
 
 }
 	
