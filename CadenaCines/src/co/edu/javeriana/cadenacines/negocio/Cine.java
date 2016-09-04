@@ -28,6 +28,12 @@ public class Cine {
 	public String toString() {
 		return "Cine [id=" + id + ", sala=" + sala + ", capacidad=" + capacidad + "]";
 	}
+	public void agregarSillas(Silla silla){
+		this.sillas.add(silla);
+	}
+	public void agragarFuncion(Funcion funcion){
+		this.funciones.add(funcion);
+	}
 	
 
 	public List<Silla> getSillas() {

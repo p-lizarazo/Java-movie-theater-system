@@ -17,6 +17,10 @@ public class CentroComercial {
 	public String toString() {
 		return "CentroComercial [nombre=" + nombre + "]";
 	}
+	
+	public void agregarCines(Cine cine){
+		this.cines.add(cine);
+	}
 
 	public String getNombre() {
 		return nombre;
