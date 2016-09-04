@@ -1,20 +1,25 @@
 package co.edu.javeriana.cadenacines.negocio;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
+
+
 public class CadenaCines {
-	
+
+
 	private String nombre;
 	private List<CentroComercial> centros;
 	private List<Pelicula> peliculas;
-	private List<Cliente> clientes;
+	private Collection<Cliente> clientes;
 	
 	public CadenaCines(String nombre) {
 		this.nombre = nombre;
 		this.centros = new ArrayList<CentroComercial>();
 		this.peliculas = new ArrayList<Pelicula>();
-		this.clientes = new ArrayList<Cliente>();
+		this.clientes = new HashSet<Cliente>();
 	}
 
 	@Override
@@ -31,11 +36,11 @@ public class CadenaCines {
 		this.peliculas = peliculas;
 	}
 
-	public List<Cliente> getClientes() {
+	public Collection<Cliente> getClientes() {
 		return clientes;
 	}
 
-	public void setClientes(List<Cliente> clientes) {
+	public void setClientes(Collection<Cliente> clientes) {
 		this.clientes = clientes;
 	}
 
@@ -54,6 +59,15 @@ public class CadenaCines {
 	public void setCentros(List<CentroComercial> centros) {
 		this.centros = centros;
 	}
+	
+	
+	public void agregarClientes(String nombre, String email){
+		
+		Cliente a =new Cliente (nombre,email);
+		this.clientes.add(a);
+		
+	}
+	
 	
 
 }
