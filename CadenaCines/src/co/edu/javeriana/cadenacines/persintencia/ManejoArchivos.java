@@ -36,7 +36,7 @@ public class ManejoArchivos {
 					long capacidad = Long.parseLong(cap);
 					Cine cine = new Cine(sala,capacidad,centroNuevo);
 					centroNuevo.agregarCines(cine);
-					String line1 = input.nextLine();
+					String line1 = input.nextLine().trim();
 					while(!line1.equals("0")){
 						StringTokenizer token = new StringTokenizer(line1,"*");
 						String fila = token.nextToken().trim();
@@ -44,11 +44,11 @@ public class ManejoArchivos {
 						int numero = Integer.parseInt(num);
 						Silla sillaNueva= new Silla(fila,numero);
 						cine.agregarSillas(sillaNueva);
-						line1 = input.nextLine();	
+						line1 = input.nextLine().trim();	
 					}
 					line = input.nextLine().trim();
 				}
-				linea = input.nextLine();
+				linea = input.nextLine().trim();
 			}
 			
 		} catch (Exception e) {
@@ -70,15 +70,15 @@ public class ManejoArchivos {
 		StringTokenizer token;
 		try {
 			input = new Scanner(inFile);
-			input.nextLine();
-			linea=input.nextLine();
+			input.nextLine().trim();
+			linea=input.nextLine().trim();
 			if(!linea.equals("#FIN") ){
-				linea=input.nextLine();
+				linea=input.nextLine().trim();
 				while(!linea.equals("#FIN")){
 					
 					token=new StringTokenizer(linea,"*");
 					cadena.agregarClientes(token.nextToken().trim(),token.nextToken().trim());
-					linea=input.nextLine().trim;
+					linea=input.nextLine().trim.();
 				}
 			}
 		} catch(FileNotFoundException e) {
