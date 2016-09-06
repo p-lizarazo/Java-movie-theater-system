@@ -78,7 +78,7 @@ public class ManejoArchivos {
 					
 					token=new StringTokenizer(linea,"*");
 					cadena.agregarClientes(token.nextToken().trim(),token.nextToken().trim());
-					linea=input.nextLine()trim;
+					linea=input.nextLine().trim;
 				}
 			}
 		} catch(FileNotFoundException e) {
@@ -101,13 +101,13 @@ public class ManejoArchivos {
 		try {
 			input = new Scanner(inFile);
 			input.nextLine();
-			linea=input.nextLine();
+			linea=input.nextLine().trim();
 			if(!linea.equals("#FIN") ){
 				linea=input.nextLine();
 				while(!linea.equals("#FIN")){
 					token=new StringTokenizer(linea,"*");
 					cadena.agregarPeliculas(Integer.parseInt(token.nextToken().trim()), token.nextToken().trim(), token.nextToken().trim());
-					linea=input.nextLine();
+					linea=input.nextLine().trim();
 				}
 			}
 		} catch(FileNotFoundException e) {
