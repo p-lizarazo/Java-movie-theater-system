@@ -6,7 +6,7 @@ public class Silla {
 	private int numero;
 	
 	
-	public Silla(String fila, int numero, Boleta boleta) {
+	public Silla(String fila, int numero) {
 		this.fila = fila;
 		this.numero = numero;
 	
@@ -15,7 +15,7 @@ public class Silla {
 
 	@Override
 	public String toString() {
-		return "Silla [fila=" + fila + ", numero=" + numero + "]";
+		return String.format("%s-0 %s-0 \n", this.fila,this.numero);
 	}
 
 

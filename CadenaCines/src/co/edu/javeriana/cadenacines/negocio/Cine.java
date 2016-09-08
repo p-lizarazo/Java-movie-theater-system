@@ -15,8 +15,9 @@ public class Cine {
 	
 	public Cine(String sala, long capacidad, CentroComercial centro) {
 		
-		this.id = CONSECUTIVO;
+		
 		CONSECUTIVO++;
+		this.id = CONSECUTIVO;
 		this.sala = sala;
 		this.capacidad = capacidad;
 		this.funciones = new ArrayList<Funcion>();
@@ -26,7 +27,7 @@ public class Cine {
 
 	@Override
 	public String toString() {
-		return "Cine [id=" + id + ", sala=" + sala + ", capacidad=" + capacidad + "]";
+		return String.format("%s-8(id) %s-3 - capacidad \n", this.id,this.capacidad);
 	}
 	public void agregarSillas(Silla silla){
 		this.sillas.add(silla);

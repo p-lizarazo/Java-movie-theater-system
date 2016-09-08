@@ -15,7 +15,7 @@ public class CentroComercial {
 
 	@Override
 	public String toString() {
-		return "CentroComercial [nombre=" + nombre + "]";
+		return String.format("CENTRO COMERCIAL %s-3  \n", this.nombre);
 	}
 	
 	public void agregarCines(Cine cine){
