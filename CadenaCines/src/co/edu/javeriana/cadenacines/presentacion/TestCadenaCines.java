@@ -99,6 +99,7 @@ public class TestCadenaCines {
 							System.out.println();
 							System.out.print(sillas.toString() + "   ");
 						}
+						cont++;
 					}
 				}
 			}
