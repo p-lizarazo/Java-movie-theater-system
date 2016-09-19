@@ -3,25 +3,50 @@ package co.edu.javeriana.cadenacines.negocio;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pelicula {
+/**
+ * Clase de uso para modelar las
+ * peliculas del sistema
+ * 
+ * @author Juan Orozco
+ * @author Santiago Lizarazo
+ *
+ */
+
+public class Pelicula implements Comparable<Pelicula> {
 	
-	private long codigo;
+	private Long codigo;
 	private String nombre;
 	private String descripcion;
 	private List<Funcion> funciones;
+	private boolean tieneBoletas;
 	
 	
-	public Pelicula(long codigo, String nombre, String descripcion) {
+	public Pelicula(Long codigo, String nombre, String descripcion) {
 		this.codigo = codigo;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.funciones = new ArrayList<Funcion>();
 	}
 
+	public boolean tieneBoletas(){
+		for(Funcion fun : this.getFunciones()){
+			for(Boleta boletas : fun.getBoletas()){
+				if(boletas.isComprada() == true){
+					return false;
+				}
+			}
+			
+		}
+		return true;
+	}
 
 	@Override
 	public String toString() {
 		return "Pelicula [codigo=" + codigo + ", nombre=" + nombre + ", descripcion=" + descripcion + "]";
+	}
+	
+	public String toStringSD() {
+		return String.format("%-5d %-4s", codigo,nombre);
 	}
 
 
@@ -87,11 +112,22 @@ public class Pelicula {
 			return false;
 		return true;
 	}
-<<<<<<< HEAD
-=======
+	/**
+	 * Toma un objeto de tipo funcion y añade la funcion
+	 * a la lista de funciones en la clase peliculas
+	 * 
+	 * @param funcion
+	 */
 	
-	
->>>>>>> 6e25eed85172926213a2fc58a6bdac3077fcd2f7
+	public void agregarFuncion(Funcion funcion){
+		this.funciones.add(funcion);
+	}
+
+	@Override
+	public int compareTo(Pelicula arg0) {
+		// TODO Auto-generated method stub
+		return this.codigo.compareTo(arg0.codigo);
+	}
 	
 
 }

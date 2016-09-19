@@ -1,7 +1,0 @@
-#--CLIENTES:
-#--nombre--------------email
-Ana Lucia Lopez *alopez@gmail.com
-Julia Acevedo *jacev@gmail.com
-Carlos Portillo *portillo@hotmail.com
-Oswaldo Roa *oroaa@javeriana.edu.co
-#FIN

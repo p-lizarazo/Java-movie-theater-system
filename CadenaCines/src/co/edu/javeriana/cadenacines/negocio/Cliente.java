@@ -3,6 +3,15 @@ package co.edu.javeriana.cadenacines.negocio;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase de uso para modelar los clientes del sistema
+ * 
+ * @author Juan Orozco
+ * @author Santiago Lizarazo
+ *
+ */
+
+
 public class Cliente {
 	
 	private static int CONSECUTIVO = 0;
@@ -14,8 +23,8 @@ public class Cliente {
 	
 	
 	public Cliente(String nombre, String email) {
-		this.id = CONSECUTIVO;
 		CONSECUTIVO++;
+		this.id = CONSECUTIVO;
 		this.nombre = nombre;
 		this.email = email;
 		this.boletas = new ArrayList<Boleta>();
@@ -23,6 +32,10 @@ public class Cliente {
 
 	public String getNombre() {
 		return nombre;
+	}
+	
+	public void agregarBoleta(Boleta bol){
+		this.boletas.add(bol);
 	}
 
 
@@ -55,6 +68,10 @@ public class Cliente {
 		return id;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -62,6 +79,10 @@ public class Cliente {
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		return result;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
 
 	@Override
 	public boolean equals(Object obj) {

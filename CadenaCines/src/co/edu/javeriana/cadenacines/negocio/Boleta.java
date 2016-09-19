@@ -1,17 +1,27 @@
 package co.edu.javeriana.cadenacines.negocio;
 
+	/**
+	 * Clase para el manejo de las boletas del sistema
+	 * 
+	 * @author Santiago Lizarazo
+	 * @author Juan Orozco
+	 *
+	 */
 
 public class Boleta {
 	
-	private boolean comprada;
+	private boolean comprada = false;
 	private Cliente client;
 	private Silla sillas;
+	private Funcion funcion;
+	
 	
 
-	public Boleta(boolean comprada, Cliente client, Silla sillas) {
-		this.comprada = comprada;
+	public Boleta(Cliente client, Silla sillas,Funcion funcion) {
+		this.comprada = true;
 		this.client = client;
 		this.sillas = sillas;
+		this.funcion=funcion;
 	}
 
 
@@ -46,10 +56,15 @@ public class Boleta {
 	public Cliente getClient() {
 		return client;
 	}
+	
 
 
 	public void setClient(Cliente client) {
 		this.client = client;
+	}
+	
+	public Funcion getFuncion() {
+		return funcion;
 	}
 	
 

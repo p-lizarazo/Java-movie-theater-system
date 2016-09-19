@@ -4,9 +4,20 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *Clase de uso para modelar la relacion 
+ *entre cines y las peliculas que se presentaran en
+ *el sistema
+ * 
+ * @author Juan Orozco
+ * @author Santiago Lizarazo
+ *
+ */
+
+
 public class Funcion {
 	
-	private static long CONSECUTIVO;
+	private static long CONSECUTIVO = 0;
 	private long id;
 	private long tarifa;
 	private LocalDateTime fecha;
@@ -15,14 +26,16 @@ public class Funcion {
 	private List<Boleta> boletas;
 	
 	public Funcion(long tarifa, LocalDateTime fecha,Cine cine,Pelicula pelicula) {
-		this.id = CONSECUTIVO;
+		
 		CONSECUTIVO++;
+		this.id = CONSECUTIVO;
 		this.tarifa = tarifa;
 		this.fecha = fecha;
 		this.cine = cine;
 		this.boletas = new ArrayList<Boleta>();
 		this.pelicula = pelicula;
-	
+		
+		
 	}
 
 	@Override
@@ -30,6 +43,15 @@ public class Funcion {
 		return "Funcion [id=" + id + ", tarifa=" + tarifa + ", fecha=" + fecha + "]";
 	}
 	
+	public String toStringSC() {
+		return "Funcion [id=" + id + ", fecha=" + fecha + ", tarifa=" + tarifa + ", sala=" + this.cine.getSala()   + ", centro=" + 
+				this.cine.getCentro().getNombre() +"]";
+	}
+	
+	public String toStringSCPel() {
+		return "Funcion [id=" + id + ", fecha=" + fecha + ", tarifa=" + tarifa + ", sala=" + this.cine.getSala()   + ", centro=" + 
+				this.cine.getCentro().getNombre() + " " + this.pelicula.toStringSD() + "]";
+	}
 	
 
 	public Cine getCine() {
@@ -79,6 +101,13 @@ public class Funcion {
 	public long getId() {
 		return id;
 	}
+	
+	public void agregarBoleta(Cliente client, Silla sillas){
+		Boleta bol = new Boleta(client,sillas,this);
+		this.boletas.add(bol);
+		client.getBoletas().add(bol);
+	}
+	
 	
 
 }
