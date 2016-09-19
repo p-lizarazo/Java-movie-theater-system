@@ -1,0 +1,53 @@
+#CENTRO COMERCIAL
+#Nombre
+Unicentro
+#CINES
+#sala-----------capacidad
+sala Uno        *10
+#SILLAS
+#fila-----numero---tipo
+A          *1      *normal
+A          *2      *normal
+A          *3      *normal
+B          *1      *normal
+B          *2      *normal
+B          *3      *normal
+C          *1      *primera
+C          *2      *primera
+D          *1      *primera
+D          *2      *primera
+0
+#sala-----------capacidad
+sala Dos        *4
+#SILLAS
+#fila-----numero---tipo
+A         *1       *normal
+A         *2       *normal
+B         *1       *primera
+B         *2       *primera
+0
+#FIN CENTRO
+#CENTRO COMERCIAL
+#Nombre
+Galerias
+#CINES
+#sala-----------capacidad
+sala Roja       *4
+#SILLAS
+#fila-----numero---tipo
+A        *1        *normal
+A        *2        *normal
+B        *1        *normal
+B        *2        *normal
+0
+#sala-----------capacidad
+sala Negra      *4
+#SILLAS
+#fila-----numero---tipo
+A        *1        *normal
+A        *2        *normal
+B        *1        *primera
+B        *2        *primera
+0
+#FIN CENTRO
+#FIN
