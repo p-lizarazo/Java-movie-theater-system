@@ -1,6 +1,7 @@
 package co.edu.javeriana.cadenacines.persintencia;
 
 import java.io.File;
+
 import java.io.FileNotFoundException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -9,76 +10,129 @@ import java.util.StringTokenizer;
 import co.edu.javeriana.cadenacines.negocio.CadenaCines;
 import co.edu.javeriana.cadenacines.negocio.CentroComercial;
 import co.edu.javeriana.cadenacines.negocio.Cine;
+import co.edu.javeriana.cadenacines.negocio.Cliente;
+import co.edu.javeriana.cadenacines.negocio.ClienteMiembro;
+import co.edu.javeriana.cadenacines.negocio.ClienteParticular;
 import co.edu.javeriana.cadenacines.negocio.Silla;
+import co.edu.javeriana.cadenacines.presentacion.Utils;
 
+/**
+ * Clase de usp para el manejo de archivos del sistema
+ * 
+ * @author Santiago Lizarazon
+ * @author Juan Orozco
+ *
+ */
 public class ManejoArchivos {
 	
+	/**
+	 * Permite cargar, a partir de un archivo los centros comerciales
+	 * sus cines asociados y sillas asociadas
+	 * 
+	 * Lee los centros comerciales, verifica que no existe este centro y si es así lo agrega
+	 * luego lee los cines asociados a este centro y se empiezan a agregar a la lista de cines del centro
+	 * por ultimo se agregan las sillas asociadas al cine
+	 * 
+	 * @param cadenaC
+	 */
 	
 	public void agregarCentrosCinesSilla(CadenaCines cadenaC){
 		Scanner scanner = new Scanner(System.in);
-		String nomArchivo = scanner.nextLine();
-		File inFile = new File("./", nomArchivo);
+		File inFile = new File("./", "centrosCinesSillas.txt");
 		Scanner input = null;
 		try {
-			input.nextLine();
+			input = new Scanner(inFile);
 			String linea = input.nextLine().trim();
+			System.out.println(linea);
 			while(!linea.equals("#FIN")){
+				input.nextLine().trim();
 				String centro = input.nextLine();
 				CentroComercial centroNuevo = new CentroComercial(centro);
-				cadenaC.agregarCentro(centroNuevo);
+				cadenaC.agregarCentroComercial(centroNuevo);
+				input.nextLine();
 				String line = input.nextLine().trim();
 				while(!line.equals("#FIN CENTRO")){
-					input.nextLine();
 					line = input.nextLine().trim();
 					StringTokenizer tokens = new StringTokenizer(line,"*");
 					String sala = tokens.nextToken().trim();
 					String cap = tokens.nextToken().trim();
 					long capacidad = Long.parseLong(cap);
 					Cine cine = new Cine(sala,capacidad,centroNuevo);
-					centroNuevo.agregarCines(cine);
+					cadenaC.agregarCine(cine, centroNuevo);
+					input.nextLine();
+					input.nextLine();
 					String line1 = input.nextLine().trim();
 					while(!line1.equals("0")){
 						StringTokenizer token = new StringTokenizer(line1,"*");
 						String fila = token.nextToken().trim();
 						String num = token.nextToken().trim();
 						int numero = Integer.parseInt(num);
-						Silla sillaNueva= new Silla(fila,numero);
-						cine.agregarSillas(sillaNueva);
-						line1 = input.nextLine().trim();	
+						String tipo = token.nextToken().trim();
+						if(tipo.equals("normal")){
+							Silla sillaNueva= new Silla(fila,numero,false);
+							cine.agregarSillas(sillaNueva);	
+						}
+						else{
+							Silla sillaNueva= new Silla(fila,numero,true);
+							cine.agregarSillas(sillaNueva);	
+						}
+						line1= input.nextLine().trim();
 					}
 					line = input.nextLine().trim();
 				}
 				linea = input.nextLine().trim();
+				
 			}
 			
 		} catch (Exception e) {
+			System.out.println("nulo");
 			System.out.println(e.getMessage());
-			 
 		}
 		finally{
 			input.close();
 		}
-		
 	}
 	
+	/**
+	 * Carga los clientes al sistema desde un archivo de texto
+	 * 
+	 * se verifica que hayan clientes en el archivo
+	 * se procesa el texto que contiene la informacion del cliente
+	 * y se agrega un nuevo cliente al sitema con : nombre y email
+	 * 
+	 * 
+	 * @param nombre
+	 * @param cadena
+	 */
 	
 	public void ingresarClientes(String nombre,CadenaCines cadena){
-		
+	
 		File inFile = new File("./" + nombre);
 		Scanner  input = null;
 		String linea;
 		StringTokenizer token;
 		try {
 			input = new Scanner(inFile);
-			input.nextLine().trim();
-			linea=input.nextLine().trim();
+			input.nextLine();
+			linea=input.nextLine();
 			if(!linea.equals("#FIN") ){
-				linea=input.nextLine().trim();
+				linea=input.nextLine();
 				while(!linea.equals("#FIN")){
 					
 					token=new StringTokenizer(linea,"*");
-					cadena.agregarClientes(token.nextToken().trim(),token.nextToken().trim());
-					linea=input.nextLine().trim.();
+					String nombreC = token.nextToken().trim();
+					String email = token.nextToken().trim();
+					String tipo = token.nextToken().trim();
+					if(tipo.equals("miembro")){
+						String fecha = token.nextToken().trim();
+						Cliente nuevo = new ClienteMiembro(nombreC,email,Utils.convertirStringFecha(fecha));
+						cadena.agregarClienteMiembro((ClienteMiembro)nuevo);
+					}
+					else{
+						Cliente nuevo = new ClienteParticular(nombreC,email);
+						cadena.agregarClienteParticular(nuevo);
+					}
+					linea=input.nextLine();
 				}
 			}
 		} catch(FileNotFoundException e) {
@@ -91,6 +145,17 @@ public class ManejoArchivos {
 		}
 		
 	}
+	/**
+	 * Permite cargar las peliculas al sistema
+	 * 
+	 * Lee la linea que contiene la informacion de la pelicula y la procesa
+	 * toma el codigo , nombre y descripcion de la pelicula
+	 * y agrega la pelicula a la lista de peliculas de la Cadena de cines
+	 * 
+	 * 
+	 * @param nombre
+	 * @param cadena
+	 */
 	
 	public void ingresarPeliculas(String nombre,CadenaCines cadena){
 		
@@ -101,13 +166,13 @@ public class ManejoArchivos {
 		try {
 			input = new Scanner(inFile);
 			input.nextLine();
-			linea=input.nextLine().trim();
+			linea=input.nextLine();
 			if(!linea.equals("#FIN") ){
 				linea=input.nextLine();
 				while(!linea.equals("#FIN")){
 					token=new StringTokenizer(linea,"*");
-					cadena.agregarPeliculas(Integer.parseInt(token.nextToken().trim()), token.nextToken().trim(), token.nextToken().trim());
-					linea=input.nextLine().trim();
+					cadena.agregarPelicula(Integer.parseInt(token.nextToken().trim()), token.nextToken().trim(), token.nextToken().trim());
+					linea=input.nextLine();
 				}
 			}
 		} catch(FileNotFoundException e) {
@@ -118,8 +183,6 @@ public class ManejoArchivos {
 		finally {
 			input.close();
 		}
-		
-		
 		
 	}
 
