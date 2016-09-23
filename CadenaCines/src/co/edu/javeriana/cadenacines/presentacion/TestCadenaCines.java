@@ -398,7 +398,3 @@ public class TestCadenaCines {
 		 
 		 
 	 }
-
-
-
-	}
