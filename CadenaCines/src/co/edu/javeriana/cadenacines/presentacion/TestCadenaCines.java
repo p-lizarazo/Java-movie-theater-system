@@ -378,7 +378,7 @@ public class TestCadenaCines {
 	  * @param cadenaX
 	  */
 	 
-	 private static void reporteClientesBoletasCompradas(CadenaCines cadenaX){
+	private static void reporteClientesBoletasCompradas(CadenaCines cadenaX){
 			
 			System.out.println("-- REPORTE DE CLIENTES CON BOLETAS COMPRADAS");
 			System.out.println();
@@ -392,13 +392,5 @@ public class TestCadenaCines {
 					}
 				}
 			}
-		}
-	 
-	
-		 
-		 
-	 }
-
-
-
 	}
+}
