@@ -44,8 +44,7 @@ public class Funcion {
 	}
 	
 	public String toStringSC() {
-		return "Funcion [id=" + id + ", fecha=" + fecha + ", tarifa=" + tarifa + ", sala=" + this.cine.getSala()   + ", centro=" + 
-				this.cine.getCentro().getNombre() +"]";
+		return ""+id+"  "+fecha+"  "+tarifa+"  "+this.cine.getSala()+"  "+"  "+this.cine.getCentro().getNombre()+" ";
 	}
 	
 	public String toStringSCPel() {

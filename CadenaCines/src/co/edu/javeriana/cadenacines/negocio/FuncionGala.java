@@ -25,6 +25,19 @@ public class FuncionGala extends Funcion {
 	public void setTrajeEtiqueta(boolean trajeEtiqueta) {
 		this.trajeEtiqueta = trajeEtiqueta;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		if (this.trajeEtiqueta){
+			return super.toStringSC() + "gala  si";
+		}
+		return super.toStringSC() + "gala  no";
+		
+	}
+	
 	
 	
 

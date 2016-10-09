@@ -2,8 +2,10 @@ package co.edu.javeriana.cadenacines.negocio;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.time.LocalDateTime;
 
 import co.edu.javeriana.cadenacines.presentacion.Utils;
@@ -22,14 +24,15 @@ public class CadenaCines implements ICadenaCines {
 
 	private String nombre;
 	private List<CentroComercial> centros;
-	private Collection<Pelicula> peliculas;
+	private Map<Long,Pelicula> peliculas;
 	private Collection<Cliente> clientes;
 	// Cambio de List a Collection para crear un HashSet
+	private Pelicula putIfAbsent;
 	
 	public CadenaCines(String nombre) {
 		this.nombre = nombre;
 		this.centros = new ArrayList<CentroComercial>();
-		this.peliculas = new HashSet<Pelicula>();
+		this.peliculas = new HashMap<Long,Pelicula>();
 		this.clientes = new HashSet<Cliente>();
 	}
 
@@ -40,11 +43,21 @@ public class CadenaCines implements ICadenaCines {
 	
 	
 
-	public Collection<Pelicula> getPeliculas() {
+	
+
+	
+
+	/**
+	 * @return the peliculas
+	 */
+	public Map<Long, Pelicula> getPeliculas() {
 		return peliculas;
 	}
 
-	public void setPeliculas(Collection<Pelicula> peliculas) {
+	/**
+	 * @param peliculas the peliculas to set
+	 */
+	public void setPeliculas(Map<Long, Pelicula> peliculas) {
 		this.peliculas = peliculas;
 	}
 
@@ -73,27 +86,18 @@ public class CadenaCines implements ICadenaCines {
 	}
 	
 	
-	
-	
-	
-	
-	
 	/**
 	 * Busca una pelicula por codigo
-	 * se recorre cada pelicula buscando si su codigo es igual
-	 * al parametro que se recibe, si es asi se retorna la pelicula
+	 * se toma la clave y se le busca la clave asociada una pelicula
+	 * si no esta se devuelve null
 	 * 
 	 * @param codigo
 	 * @return Pelicula que coincida con el codigo recibido o -1 si no se encontro
 	 */
 	
-	public Pelicula buscarPelicula(long codigo){
-		for(Pelicula pelicula: this.getPeliculas()){
-			if(codigo==pelicula.getCodigo()){
-				return pelicula;
-			}
-		}
-		return null;
+	public Pelicula buscarPelicula(Long codigo){
+		return peliculas.get(codigo);
+		
 	}
 	
 	/**
@@ -147,7 +151,8 @@ public class CadenaCines implements ICadenaCines {
 	@Override
 	public void agregarPelicula(long codigo, String nombre, String descripcion) {
 		Pelicula a = new Pelicula(codigo,nombre,descripcion);
-		this.peliculas.add(a);
+		Long key = codigo;
+		this.peliculas.putIfAbsent(key, a);
 		
 	}
 

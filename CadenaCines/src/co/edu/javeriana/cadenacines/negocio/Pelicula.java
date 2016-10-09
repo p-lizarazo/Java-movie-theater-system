@@ -42,7 +42,7 @@ public class Pelicula implements Comparable<Pelicula> {
 
 	@Override
 	public String toString() {
-		return "Pelicula [codigo=" + codigo + ", nombre=" + nombre + ", descripcion=" + descripcion + "]";
+		return String.format("%-1d   %-1s     %-1s", codigo,nombre,descripcion);
 	}
 	
 	public String toStringSD() {

@@ -1,9 +1,11 @@
 package co.edu.javeriana.cadenacines.presentacion;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeSet;
 
@@ -13,6 +15,7 @@ import co.edu.javeriana.cadenacines.negocio.CentroComercial;
 import co.edu.javeriana.cadenacines.negocio.Cine;
 import co.edu.javeriana.cadenacines.negocio.Cliente;
 import co.edu.javeriana.cadenacines.negocio.Funcion;
+import co.edu.javeriana.cadenacines.negocio.FuncionGala;
 import co.edu.javeriana.cadenacines.negocio.Pelicula;
 import co.edu.javeriana.cadenacines.negocio.Silla;
 import co.edu.javeriana.cadenacines.negocio.SillaComparator;
@@ -112,9 +115,9 @@ public class TestCadenaCines {
 	 */
 	
 	private static void mostrarPeliculasSD(CadenaCines miCine){
-		TreeSet<Pelicula> peliculas = new TreeSet<Pelicula>();
-		peliculas.addAll(miCine.getPeliculas());
-		for(Pelicula pelicula: peliculas){
+		Map<Long,Pelicula> pelis = new TreeMap<Long,Pelicula>();
+		pelis.putAll(miCine.getPeliculas());
+		for(Pelicula pelicula:  pelis.values()){
 			System.out.println("   "+pelicula.toStringSD());
 		}
 	}
@@ -169,8 +172,8 @@ public class TestCadenaCines {
 		long tarifa = in.nextLong();
 		in.nextLine();
 		String tipo = in.nextLine();
-		String etiqueta = in.nextLine();
 		if(tipo.equals("gala")){
+			String etiqueta = in.nextLine();
 			if(etiqueta.equals("si")){
 				long a = miCine.agregarFuncionGala(codigo, idCine, fecha, hora, tarifa,true);
 				if(a!=-1){
@@ -211,7 +214,9 @@ public class TestCadenaCines {
 	 */
 	
 	private static void mostrarPeliculas(CadenaCines miCine){
-		for(Pelicula pelicula:miCine.getPeliculas()){
+		Map<Long,Pelicula> pelis = new TreeMap<Long,Pelicula>();
+		pelis.putAll(miCine.getPeliculas());
+		for(Pelicula pelicula: pelis.values()){
 			System.out.println(pelicula.toString());
 		}
 	}
@@ -233,7 +238,12 @@ public class TestCadenaCines {
 		System.out.println("Indique el codigo de pelicula que quiere consultar");
 		Pelicula a=miCine.buscarPelicula(in.nextLong());
 		for(Funcion funcion:a.getFunciones()){
-			System.out.println(funcion.toStringSC());
+			if(funcion instanceof FuncionGala){
+				System.out.println((funcion.toString()));
+			}
+			else{
+				System.out.println(funcion.toStringSC());
+			}
 		}
 	}
 	
@@ -378,7 +388,7 @@ public class TestCadenaCines {
 	  * @param cadenaX
 	  */
 	 
-	private static void reporteClientesBoletasCompradas(CadenaCines cadenaX){
+	 private static void reporteClientesBoletasCompradas(CadenaCines cadenaX){
 			
 			System.out.println("-- REPORTE DE CLIENTES CON BOLETAS COMPRADAS");
 			System.out.println();
@@ -392,5 +402,12 @@ public class TestCadenaCines {
 					}
 				}
 			}
-	}
-}
+		}
+	 
+	
+		 
+		 
+	 }
+
+
+

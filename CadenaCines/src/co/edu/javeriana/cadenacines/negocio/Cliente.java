@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 
-public class Cliente {
+public abstract class Cliente {
 	
 	private static int CONSECUTIVO = 0;
 	private long id;
@@ -67,6 +67,8 @@ public class Cliente {
 	public long getId() {
 		return id;
 	}
+	
+	public abstract long valorBoleta();
 
 	/**
 	 * {@inheritDoc}
