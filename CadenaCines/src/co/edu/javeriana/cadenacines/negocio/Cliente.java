@@ -1,10 +1,12 @@
 package co.edu.javeriana.cadenacines.negocio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
- * Clase de uso para modelar los clientes del sistema
+ * Clase abstracta para modelar los clientes del sistema
  * 
  * @author Juan Orozco
  * @author Santiago Lizarazo
@@ -12,14 +14,21 @@ import java.util.List;
  */
 
 
-public abstract class Cliente {
+public abstract class Cliente implements Comparable<Cliente>,Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static int CONSECUTIVO = 0;
 	private long id;
 	private String nombre;
 	private String email;
 	private List<Boleta> boletas;
 	
+	public int compareTo(Cliente d){
+		return this.getNombre().compareTo(d.getNombre());
+	}
 	
 	
 	public Cliente(String nombre, String email) {
@@ -68,7 +77,7 @@ public abstract class Cliente {
 		return id;
 	}
 	
-	public abstract long valorBoleta();
+	public abstract long valorBoletas(long retorno);
 
 	/**
 	 * {@inheritDoc}
@@ -107,7 +116,8 @@ public abstract class Cliente {
 	
 	@Override
 	public String toString() {
-		return "Cliente [id=" + id + ", nombre=" + nombre + ", email=" + email + "]";
+		return id + "	" + nombre;
 	}
 
+	public abstract String toString8();
 }

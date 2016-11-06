@@ -1,5 +1,6 @@
 package co.edu.javeriana.cadenacines.presentacion;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
@@ -16,6 +17,7 @@ import co.edu.javeriana.cadenacines.negocio.Cine;
 import co.edu.javeriana.cadenacines.negocio.Cliente;
 import co.edu.javeriana.cadenacines.negocio.Funcion;
 import co.edu.javeriana.cadenacines.negocio.FuncionGala;
+import co.edu.javeriana.cadenacines.negocio.ICadenaCines;
 import co.edu.javeriana.cadenacines.negocio.Pelicula;
 import co.edu.javeriana.cadenacines.negocio.Silla;
 import co.edu.javeriana.cadenacines.negocio.SillaComparator;
@@ -34,8 +36,7 @@ public class TestCadenaCines {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
-		CadenaCines miCine = new CadenaCines("Papuu");
+		ICadenaCines miCine = new CadenaCines("Papuu");
 		ManejoArchivos a = new ManejoArchivos();
 		int op = 0;
 		Scanner in = new Scanner(System.in);
@@ -44,43 +45,49 @@ public class TestCadenaCines {
 			op=menu(in);
 			switch(op){
 			case 1:
-				a.agregarCentrosCinesSilla(miCine);
+				a.agregarCentrosCinesSilla((CadenaCines)miCine);
 				// ingresar centros comerciales, cines y sillas asociadas
 				break;
 			case 2:
-				generarReporteCentrosCinesSillas(miCine);
+				generarReporteCentrosCinesSillas((CadenaCines)miCine);
 				// reporte de centros comerciales, cines y sillas asociadas
 				break;
 			case 3:
 				//ingresar clientes
-				a.ingresarClientes("Clientes.txt", miCine);
+				a.ingresarClientes(leeString.nextLine(), (CadenaCines)miCine);
 				
 				break;
 			case 4:
 				//opcion 4: ingresar peliculas
-				a.ingresarPeliculas("Peliculas.txt", miCine);
+				a.ingresarPeliculas(leeString.nextLine(), (CadenaCines)miCine);
 				break;
 			case 5:
 				//AgregaFunciones
-				agregarFuncion(miCine,leeString);
+				agregarFuncion((CadenaCines)miCine,leeString);
 				break;
 			case 6:
 				//consultar funciones para una pelicula
-				consultarFunciones(miCine,leeString);
+				consultarFunciones((CadenaCines)miCine,leeString);
 				break;
 			case 7:
 				//Comprar boletas para una funcion
-				comprarBoletaFuncion(miCine);
+				try {
+					comprarBoletaFuncion((CadenaCines)miCine);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				break;
 				
 			case 8:
 				//Reporte de clientes con boletas compradas
-				reporteClientesBoletasCompradas(miCine);
+				reporteClientesBoletasCompradas((CadenaCines)miCine);
 				break;
 				
 			case 9:
 				in.close();
 				leeString.close();
+				System.out.println("HASTA LUEGO, GRACIAS POR USAR POO CINES");
 				break;
 				
 			
@@ -88,13 +95,11 @@ public class TestCadenaCines {
 			
 			}
 		} while (op!=9);
-		a.ingresarClientes("Clientes.txt", miCine);
-		a.ingresarPeliculas("Peliculas.txt", miCine);	
 		
 	}
 
 	private static int menu(Scanner in){
-		System.out.println("SISTEMA BANCO \nopcion 1: ingresar centros comerciales, cines y sillas asociadas"
+		System.out.println("SISTEMA CADENACINES \nopcion 1: ingresar centros comerciales, cines y sillas asociadas"
 				+ "\nopcion 2: reporte de centros comerciales, cines y sillas asociadas"
 				+ "\nopcion 3: ingresar clientes" + "\nopcion 4: ingresar peliculas"
 				+ "\nopcion 5: agregar una funcion asociada a una pelicula y a un cine" + "\nopcion 6: consultar funciones para una pelicula"
@@ -102,7 +107,6 @@ public class TestCadenaCines {
 				+ "\nopcion 9: salir");
 		String l = in.nextLine();
 		int i = Integer.parseInt(l);
-		System.out.println(i);
 		return i;
 	}
 	/**
@@ -114,9 +118,9 @@ public class TestCadenaCines {
 	 * @param miCine
 	 */
 	
-	private static void mostrarPeliculasSD(CadenaCines miCine){
+	private static void mostrarPeliculasSD(ICadenaCines miCine){
 		Map<Long,Pelicula> pelis = new TreeMap<Long,Pelicula>();
-		pelis.putAll(miCine.getPeliculas());
+		pelis.putAll(((CadenaCines) miCine).getPeliculas());
 		for(Pelicula pelicula:  pelis.values()){
 			System.out.println("   "+pelicula.toStringSD());
 		}
@@ -142,11 +146,13 @@ public class TestCadenaCines {
 	
 	/**
 	 * Agrega una nueva funcion asociada a un cine
-	 * Muestra las peliculas y cines del sistema
-	 * le pide al usuario ingresar la informacion de la nueva funcion a agregar
-	 * intancia una nueva funcion
+	 * Muestra las peliculas(ordenadas por codigo) y cines del sistema(ordenados
+	 * por id) le pide al usuario ingresar la informacion
+	 * de la nueva funcion a agregar(se le pregunta si la funcion es de gala o no)
+	 * si es de gala, se le preguntara si requiere traje de etiquet
+	 * intancia una nueva funcion(de gala o corriente)
 	 * y se verifica que efectivamente se pudo agregar
-	 * 
+	 * se le muestra el id al usuario
 	 * 
 	 * @param miCine
 	 * @param in 
@@ -154,6 +160,8 @@ public class TestCadenaCines {
 	
 	
 	private static void agregarFuncion(CadenaCines miCine,Scanner in){
+		System.out.println("--AGREGAR UNA FUNCION ASOCIADA A UN CINE Y A UNA PELICULA");
+		System.out.println();
 		System.out.println("--- Se muestran las peliculas del sistema:");
 		System.out.println("   codigo"+"    "+"nombre");
 		System.out.println("   ----------------------------------------");
@@ -177,7 +185,7 @@ public class TestCadenaCines {
 			if(etiqueta.equals("si")){
 				long a = miCine.agregarFuncionGala(codigo, idCine, fecha, hora, tarifa,true);
 				if(a!=-1){
-					System.out.println("Se agrego la nueva funcion con id : " + a);
+					System.out.println("**Se agrego la nueva funcion con id : " + a);
 				} else {
 					System.out.println("No se pudo agregar la función");
 				}
@@ -207,7 +215,8 @@ public class TestCadenaCines {
 	
 	}
 	/**
-	 * Recorre todas las peliculas del sistema 
+	 * Recorre todas las peliculas del sistema
+	 * se ordenan, de acuerdo al id de cada pelicula
 	 * y imprime toda su informacion mediante el metodo toString
 	 * 
 	 * @param miCine
@@ -222,7 +231,7 @@ public class TestCadenaCines {
 	}
 	/**
 	 * Se muestran las peliculas disponibles en el sistema
-	 * con su id y nombre
+	 * ordenadas por id  con su id y nombre
 	 * Se le pide al usuario que digite el codigo de la pelicula
 	 * para la cual quiere ver sus funciones disponibles
 	 * Se toman todas las funciones de la pelicula escogida
@@ -233,10 +242,17 @@ public class TestCadenaCines {
 	 */
 	
 	private static void consultarFunciones(CadenaCines miCine,Scanner in){
-		System.out.println("-- Las peliculas son -- ");
+		System.out.println("CONSULTAR FUNCIONES PARA UNA PELICULA");
+		System.out.println();
+		System.out.println("--- Se muestran las peliculas del sistema: ");
+		System.out.println("codigo	nombre		descripción");
+		System.out.println(" ---------------------------------------------------");
 		mostrarPeliculas(miCine);
-		System.out.println("Indique el codigo de pelicula que quiere consultar");
+		System.out.println("--Indique el codigo de pelicula que quiere consultar");
 		Pelicula a=miCine.buscarPelicula(in.nextLong());
+		System.out.println("--Funciones para la pelicula" + a.getCodigo() + " " + a.getNombre());
+		System.out.println("id	fecha		hora	tarifa	sala		centro		tipo	etiqueta");
+		System.out.println(" ---------------------------------------------------------------------------------");
 		for(Funcion funcion:a.getFunciones()){
 			if(funcion instanceof FuncionGala){
 				System.out.println((funcion.toString()));
@@ -250,15 +266,15 @@ public class TestCadenaCines {
 	
 	/**
 	 * Muestra todos los centros asociados a una cadena de cines
-	 * por cada centro se recorre e imprimen su cines asociados
-	 * y por cada cine se imprimiran las listas por orden,
-	 * de acuerdo a la primera letra de la silla
-	 * 
+	 * por cada centro se imprime ordenados por nombre
+	 *  se recorre e imprimen su cines asociados ordenados por sala
+	 * y por cada cine se imprimiran las sillas ordenadas por fila y numero
 	 * @param cadenaC
 	 */
 	
 	private static  void generarReporteCentrosCinesSillas(CadenaCines cadenaC){
 		System.out.println("--REPORTE DE CENTROS COMERCIALES, CINES Y SILLAS");
+		System.out.println("");
 		TreeSet<CentroComercial> centross = new TreeSet<CentroComercial>();
 		centross.addAll(cadenaC.getCentros());
 		for(CentroComercial centros : centross){
@@ -271,118 +287,92 @@ public class TestCadenaCines {
 				System.out.println("SILLAS:");
 				Collections.sort((ArrayList<Silla>)cines.getSillas(),new SillaComparator());
 				for(Silla sillas : cines.getSillas()){	
-					if(sillas.isPrimera()){
-								
-						System.out.println(sillas.toString()+"(primera)");
-					}	
-					else{
-						System.out.println(sillas.toString()+"(normal)");
-					}
-					
-					}
-				
+					System.out.println(sillas);
 				}
-				System.out.println();
+				
 			}
+		System.out.println();
+		}
 		
 		
 	}
 	/**
 	 * Permite al usuario comprar boletas asociadas a una funcion
-	 * Se imprimen todos los clientes del sistema
+	 * Se imprimen todos los clientes del sistema(ordenados por nombre)
 	 * recorriendo la lista en la cadena de cines
 	 * se le pide al usuario que digite el id del cliente que hará
 	 * la compra, el numero de boletas y el id de la funcion
 	 * 
-	 * se le muestran las sillas disponibles y se le permite escojer las sillas
+	 * se le muestran las sillas disponibles con su tipo y se le permite escojer las sillas
 	 * de acuerdo el numero de boletas a comprar, se procesa la compra
 	 * y se imprime el costo total
 	 * @param cadenaX
+	 * @throws IOException 
 	 */
 	
 	
-	 private static void comprarBoletaFuncion(CadenaCines cadenaX){
-			int id,numBoletas,idFuncion;
-			String id1,numBoletas1,idFuncion1;
+	 private static void comprarBoletaFuncion(CadenaCines cadenaX) throws IOException{
+			int numBoletas;
+			long id,idFuncion;
 			Scanner scanner = new Scanner(System.in);
 			
 			System.out.println("--COMPRAR BOLETAS PARA UNA FUNCION");
 			System.out.println();
 			System.out.println("--Se muestran los clientes del sistema");
-			System.out.println("    id"+"    "+"nombre");
+			System.out.println("    id"+"    "+"nombre" + "	" + "tipo");
 			System.out.println("    ------------------------");
-			for(Cliente clientes : cadenaX.getClientes()){
-				System.out.println(clientes.getId() + "    " + clientes.getNombre());
+			List <Cliente> sortedList = new ArrayList<Cliente>(cadenaX.getClientes());
+			Collections.sort(sortedList);
+			for(Cliente clientes : sortedList){
+				System.out.println("    "+ clientes.toString());
 			}
 			System.out.println("--- Indique datos de compra:");
-			System.out.println("id del cliente, numero de boletas, id de la funcion");
+			System.out.println("	id del cliente, numero de boletas, id de la funcion");
 			System.out.println("id Cliente:");
-			id1 = scanner.nextLine();
+			id = scanner.nextLong();
 			System.out.println("numBoletas: ");
-			numBoletas1 = scanner.nextLine();
+			numBoletas=scanner.nextInt();
 			System.out.println("idFuncion: ");
-			idFuncion1= scanner.nextLine();
-			id = Integer.parseInt(id1);
-			numBoletas = Integer.parseInt(numBoletas1);
-			idFuncion = Integer.parseInt(idFuncion1);
-			List <Cliente> comprador = new ArrayList<Cliente> (cadenaX.getClientes());
-			Cliente com=null;
-			for(Cliente comp : comprador){
-				if(comp.getId()==id){
-					com=comp;
+			idFuncion=scanner.nextLong();
+			Cliente com=cadenaX.buscarCliente(id);
+			Funcion func=cadenaX.buscarFuncion(idFuncion);
+			
+			System.out.println("Se muestran las sillas disponibles para la funcion " + idFuncion + " :");
+			System.out.println("	fila"+"    "+"numero" + "	tipo");
+			System.out.println("    ---------------------------------");
+			for(Silla silla : func.getCine().getSillas()){
+				if(func.sillaDisponible(silla)){
+					System.out.println("	" +silla.toStringTipo());
 				}
-			}
-			System.out.println("Se muestran las sillas disponibles para la funcion" + idFuncion + " :");
-			System.out.println("    fila"+"    "+"numero");
-			System.out.println("    ------------");
-			Funcion x = Utils.buscarFuncionXId(cadenaX, idFuncion);
-			Cine cin = x.getCine();
-			for(Silla silla : cin.getSillas()){
-					System.out.println(silla.toString());
 			}
 			System.out.println("---- Indique " + numBoletas + " sillas para las boletas que desea comprar");
 			System.out.println("    fila"+"    "+"numero");
-			System.out.println("    -----------");
-			String fila,num1;
-			int num;
-			int numBoletas2=0;
-			for(int i = 0; i<numBoletas;i++){
-				fila = scanner.nextLine();
-				num1 = scanner.nextLine();
-				num = Integer.parseInt(num1);
-				String tipo = scanner.nextLine();
-				Silla nueva = null;
-				if(tipo.equals("normal")){
-					nueva = new Silla(fila,num,false);
+			System.out.println("    ---------------");
+			long suma=0;
+			for(int i=0;i<numBoletas;i++){
+				scanner.nextLine();
+				String fila = scanner.nextLine();
+				int numero = scanner.nextInt(); 
+				long valor=com.valorBoletas(cadenaX.comprarBoleta(fila,numero,func,com));
+				if(valor>0){
+					suma=suma+valor;
+				} else {
+					System.out.println("No se pudo comprar esta boleta");
 				}
-				else{
-					nueva = new Silla(fila,num,true);
-				}
-				
-				
-				boolean comprada = false;
-				for (Boleta boletas:x.getBoletas()){
-					if(boletas.getSillas().equals(nueva)){
-						comprada = true;
-					}
-					
-				}
-				if(!comprada){
-					x.agregarBoleta(com, nueva);
-					numBoletas2++;
-				}
-				else
-					System.out.println("No se pudo comprar la boleta ya está ocupada");
 			}
-			System.out.println("** Se realizo la compra con exito por un valor de $ " + (x.getTarifa() * numBoletas2));
-				
+			System.out.println("**Se realizo la compra con exito por un valor de " + suma );
+			
 		}
 	 
 	 /**
 	  * Se mostraran las boletas que cada cliente ha comprado en la cadena de cines
-	  * por cada cliente se mostrara su informacion y las boletas que ha adquirido
+	  * clientes, ordenados por nombre
+	  * por cada cliente se mostrara su informacion incluyendo tipo y fecha membresia
+	  * si el cliente es miembro, junto con las boletas que ha adquirido
+	  * ordenadas por id de funcion a la que pertenece
 	  * por cada boleta, su silla asociada, su cine y centro
-	  * se mostrara toda la informacion de la funcion asociada a la boleta 
+	  * se mostrara toda la informacion de la funcion asociada junto
+	  * con el tipo de la funcion y si requiere traje de etiqueta 
 	  * y la infomormacion de la pelicula asociada a la funcion
 	  * 
 	  * @param cadenaX
@@ -393,20 +383,24 @@ public class TestCadenaCines {
 			System.out.println("-- REPORTE DE CLIENTES CON BOLETAS COMPRADAS");
 			System.out.println();
 			System.out.println();
-			for(Cliente clientes : cadenaX.getClientes()){
-				if(clientes.getBoletas().size()>0){
-					System.out.println(clientes.toString());
-					for(Boleta boletas : clientes.getBoletas()){
-						System.out.println(boletas.getSillas().toString());
-						System.out.println(boletas.getFuncion().toStringSCPel());
+			
+			List <Cliente> sortedList = new ArrayList<Cliente>(cadenaX.getClientes());
+			Collections.sort(sortedList);
+			for(Cliente clientes : sortedList){
+				if(!clientes.getBoletas().isEmpty()){
+					
+					System.out.println("--CLIENTE " + clientes.toString8());
+					System.out.println();
+					Collections.sort(clientes.getBoletas());
+					
+					for(Boleta boleta : clientes.getBoletas()){
+						System.out.println(boleta.toString());
+						System.out.println();
 					}
 				}
 			}
+			
 		}
-	 
-	
-		 
-		 
 	 }
 
 

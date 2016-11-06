@@ -1,5 +1,6 @@
 package co.edu.javeriana.cadenacines.negocio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +12,12 @@ import java.util.List;
  * @author Juan Orozco
  *
  */
-public class CentroComercial implements Comparable<CentroComercial> {
+public class CentroComercial implements Comparable<CentroComercial>,Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private List<Cine> cines;
 	
@@ -96,6 +101,10 @@ public class CentroComercial implements Comparable<CentroComercial> {
 		this.cines.add(cine);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	
 	@Override
 	public int compareTo(CentroComercial arg0) {
 		// TODO Auto-generated method stub

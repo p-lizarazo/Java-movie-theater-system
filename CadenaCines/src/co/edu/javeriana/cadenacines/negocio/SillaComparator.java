@@ -1,6 +1,16 @@
- package co.edu.javeriana.cadenacines.negocio;
+package co.edu.javeriana.cadenacines.negocio;
+
 
 import java.util.Comparator;
+
+/**
+ * Clase de uso que implementando un comparator de Sillas
+ * compara por cada una sus filas y numeros para poder ordenarlas
+ * 
+ * @author Juan Orozco
+ * @author Santiago Lizarazo
+ *
+ */
 
 public class SillaComparator implements Comparator<Silla> {
 

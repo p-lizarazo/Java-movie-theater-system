@@ -1,6 +1,8 @@
 package co.edu.javeriana.cadenacines.negocio;
 
-	/**
+import java.io.Serializable;
+
+/**
 	 * Clase para el manejo de las boletas del sistema
 	 * 
 	 * @author Santiago Lizarazo
@@ -8,8 +10,12 @@ package co.edu.javeriana.cadenacines.negocio;
 	 *
 	 */
 
-public class Boleta {
+public class Boleta implements Comparable<Boleta>,Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean comprada = false;
 	private Cliente client;
 	private Silla sillas;
@@ -29,7 +35,8 @@ public class Boleta {
 
 	@Override
 	public String toString() {
-		return "Boleta [comprada=" + comprada + ", client=" + client + "]";
+		return "Boleta:" + sillas.toStringTipo() + "	" + funcion.getCine().getSala() + "	" + funcion.getCine().getCentro().getNombre() + "	" 
+				+ "\n	" + "FUNCION: "+funcion.toStringSCPel() +"\n	PELICULA:	" + funcion.getPelicula().toStringSD();
 	}
 	
 
@@ -65,6 +72,17 @@ public class Boleta {
 	
 	public Funcion getFuncion() {
 		return funcion;
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+
+	@Override
+	public int compareTo(Boleta o) {
+		// TODO Auto-generated method stub
+		return (int) (funcion.getId()-o.getFuncion().getId());
 	}
 	
 

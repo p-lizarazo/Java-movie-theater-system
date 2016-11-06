@@ -1,5 +1,6 @@
 package co.edu.javeriana.cadenacines.negocio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +13,12 @@ import java.util.List;
  *
  */
 
-public class Pelicula implements Comparable<Pelicula> {
+public class Pelicula implements Comparable<Pelicula>, Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long codigo;
 	private String nombre;
 	private String descripcion;
@@ -28,6 +33,12 @@ public class Pelicula implements Comparable<Pelicula> {
 		this.funciones = new ArrayList<Funcion>();
 	}
 
+	/**
+	 * por cada funcion revisa si las boletas asociadas
+	 * estan compradas o no 
+	 * 
+	 * @return true si la boleta esta comprada, falso de lo contrario
+	 */
 	public boolean tieneBoletas(){
 		for(Funcion fun : this.getFunciones()){
 			for(Boleta boletas : fun.getBoletas()){
@@ -98,7 +109,10 @@ public class Pelicula implements Comparable<Pelicula> {
 		return result;
 	}
 
-
+	/**
+	 * {@inheritDoc}
+	 */
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -122,11 +136,33 @@ public class Pelicula implements Comparable<Pelicula> {
 	public void agregarFuncion(Funcion funcion){
 		this.funciones.add(funcion);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
 
 	@Override
 	public int compareTo(Pelicula arg0) {
 		// TODO Auto-generated method stub
 		return this.codigo.compareTo(arg0.codigo);
+	}
+	
+	/**
+	 * Recorre la lista de las funciones asociadas
+	 * si encuentra la que coincida con el id ingresado se retorna esa funcion
+	 * 
+	 * @param id
+	 * @return funcion asociada al id ingresado, null si no esta
+	 */
+	
+	public Funcion buscarFuncion(long id){
+		for(Funcion funcion:funciones){
+			if(id==funcion.getId()){
+				return funcion;
+			}
+		}
+		return null;
+		
 	}
 	
 

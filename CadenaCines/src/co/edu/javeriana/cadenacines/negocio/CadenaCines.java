@@ -6,13 +6,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 import java.time.LocalDateTime;
 
 import co.edu.javeriana.cadenacines.presentacion.Utils;
 
 /**
  * Clase de negocio del sistema
- * encargada de manejar todo el sistema en conjunto
+ * encargada de manejar las cadenas de cines
+ * con ayuda de la interfaz ICadenaCines
  * 
  * @author Juan Orozco
  * @author Santiago Lizarazo
@@ -22,13 +25,14 @@ import co.edu.javeriana.cadenacines.presentacion.Utils;
 public class CadenaCines implements ICadenaCines {
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private List<CentroComercial> centros;
 	private Map<Long,Pelicula> peliculas;
 	private Collection<Cliente> clientes;
-	// Cambio de List a Collection para crear un HashSet
-	private Pelicula putIfAbsent;
-	
 	public CadenaCines(String nombre) {
 		this.nombre = nombre;
 		this.centros = new ArrayList<CentroComercial>();
@@ -101,7 +105,7 @@ public class CadenaCines implements ICadenaCines {
 	}
 	
 	/**
-	 * Busca una Cine por codigo
+	 * Busca un Cine por codigo
 	 * se recorre cada Cine asociada a un centro buscando si su codigo es igual
 	 * al parametro que se recibe, si es asi se retorna el Cine
 	 * 
@@ -117,18 +121,60 @@ public class CadenaCines implements ICadenaCines {
 		}
 		return null;
 	}
+	/**
+	 * Busca un cliente por codigo
+	 * recorre la lista de clientes del sistema
+	 * y si encuentra el cliente con el id que entra
+	 * como parametro se devuelve el cliene
+	 * 
+	 * @param id
+	 * @return Cliente asociado al id indicado, o null si no está
+	 */
+	
+
+	public Cliente buscarCliente(long id){
+		for(Cliente comp : clientes){
+			if(comp.getId()==id){
+				return comp;
+			}
+		}
+		return null;
+	}
 	
 	/**
-	 * Agrega un nuevo centro comercial a la lista de centros de la cadena
-	 * toma un objeto de tipo centrocomercial y lo añade
+	 * Recorre la lista de peliculas del sistema en busca
+	 * de las funciones asociadas, y si el id de alguna funcion
+	 * coincide con el id ingresado se devuelve la funcion
 	 * 
-	 * @param centroNuevo
+	 * @param peliId
+	 * @return Funcion con id que se recibe , o null si no se encuentra
+	 */
+	
+	public Funcion buscarFuncion(long peliId){
+		Funcion funcion;
+		for(Entry<Long, Pelicula> peli:peliculas.entrySet()){
+			funcion=peli.getValue().buscarFuncion(peliId);
+			if(funcion!=null){
+				return funcion;
+			};
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * {@inheritDoc}
 	 */
 	
 
 	@Override
 	public void agregarCentroComercial(CentroComercial centroNuevo) {
 		this.centros.add(centroNuevo);
+	
+
+	/**
+	 * {@inheritDoc}
+	 */
 		
 	}
 
@@ -139,14 +185,9 @@ public class CadenaCines implements ICadenaCines {
 	}
 
 		
-		/**
-		 * Agrega una nueva pelicula a la lista de peliculas en la cadena de cine
-		 * 
-		 * @param codigo
-		 * @param nombre
-		 * @param descripcion
-		 */	
-		
+	/**
+	 * {@inheritDoc}
+	 */	
 	
 	@Override
 	public void agregarPelicula(long codigo, String nombre, String descripcion) {
@@ -155,6 +196,10 @@ public class CadenaCines implements ICadenaCines {
 		this.peliculas.putIfAbsent(key, a);
 		
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
 
 	@Override
 	public long agregarFuncionGala(long codigo,long idCine,String fecha,String hora, long tarifa, boolean trajeE) {
@@ -170,19 +215,8 @@ public class CadenaCines implements ICadenaCines {
 	}
 	
 	/**
-	 * Agrega una nueva funcion corriente asociada a un cine y una pelicula
-	 * se verifica que el cine y la pelicula existan, si es así
-	 * se añade la funcion.
-	 * 
-	 * 
-	 * @param codigo
-	 * @param idCine
-	 * @param fecha
-	 * @param hora
-	 * @param tarifa
-	 * @return id, que se le asigna a la funcion
+	 * {@inheritDoc}
 	 */
-	
 
 	@Override
 	public long agregarFuncionCorriente(long codigo,long idCine,String fecha,String hora, long tarifa) {
@@ -196,14 +230,10 @@ public class CadenaCines implements ICadenaCines {
 		}
 		
 	}
-	
+
 	/**
-	 * Agrega un nuevo clienteMiembro a la lista de clientes en la cadena de cine
-	 * 
-	 * @param ClienteMiembro nuevo
-	 * 
+	 * {@inheritDoc}
 	 */
-	
 
 	@Override
 	public void agregarClienteMiembro(ClienteMiembro nuevo) {
@@ -213,10 +243,7 @@ public class CadenaCines implements ICadenaCines {
 	}
 	
 	/**
-	 * Agrega un nuevo cliente particular a la lista de clientes en la cadena de cine
-	 * 
-	 * @param Cliente nuevo
-	 * 
+	 * {@inheritDoc}
 	 */
 
 	@Override
@@ -224,11 +251,38 @@ public class CadenaCines implements ICadenaCines {
 		this.clientes.add(nuevo);
 		
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	
 
 	@Override
-	public void comprarBoleta() {
-		// TODO Auto-generated method stub
+	public long comprarBoleta(String fila, int numero, Funcion funcion, Cliente cliente) {
+		Silla a=funcion.getCine().buscarSilla(fila, numero);
+		if(a!=null){
+			if(funcion.sillaDisponible(a)){
+				funcion.agregarBoleta(cliente, a);
+				if(a.getTipo()=="primera"){
+					return (long) (funcion.calcularValorBoleta()+funcion.calcularValorBoleta()*0.3);
+				} else{
+					return funcion.calcularValorBoleta();
+				}
+			} else {
+				return 0;
+			}	
+		}
+		
+		return 0;
+	}
+	
+	public  Map<Long,Pelicula> mostrarPeliculasSD(ICadenaCines miCine){
+		Map<Long,Pelicula> pelis = new TreeMap<Long,Pelicula>();
+		pelis.putAll(((CadenaCines) miCine).getPeliculas());
+		return pelis;
 		
 	}
+
+
 	
 }

@@ -1,8 +1,14 @@
 package co.edu.javeriana.cadenacines.persintencia;
 
 import java.io.File;
-
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -13,6 +19,7 @@ import co.edu.javeriana.cadenacines.negocio.Cine;
 import co.edu.javeriana.cadenacines.negocio.Cliente;
 import co.edu.javeriana.cadenacines.negocio.ClienteMiembro;
 import co.edu.javeriana.cadenacines.negocio.ClienteParticular;
+import co.edu.javeriana.cadenacines.negocio.ICadenaCines;
 import co.edu.javeriana.cadenacines.negocio.Silla;
 import co.edu.javeriana.cadenacines.presentacion.Utils;
 
@@ -29,16 +36,16 @@ public class ManejoArchivos {
 	 * Permite cargar, a partir de un archivo los centros comerciales
 	 * sus cines asociados y sillas asociadas
 	 * 
-	 * Lee los centros comerciales, verifica que no existe este centro y si es así lo agrega
+	 * Lee los centros comerciales, verifica que no existe este centro y si es asï¿½ lo agrega
 	 * luego lee los cines asociados a este centro y se empiezan a agregar a la lista de cines del centro
 	 * por ultimo se agregan las sillas asociadas al cine
 	 * 
 	 * @param cadenaC
 	 */
 	
-	public void agregarCentrosCinesSilla(CadenaCines cadenaC){
+	public void agregarCentrosCinesSilla(ICadenaCines cadenaC,String nombre){
 		Scanner scanner = new Scanner(System.in);
-		File inFile = new File("./", "centrosCinesSillas.txt");
+		File inFile = new File("./", nombre);
 		Scanner input = null;
 		try {
 			input = new Scanner(inFile);
@@ -69,11 +76,11 @@ public class ManejoArchivos {
 						int numero = Integer.parseInt(num);
 						String tipo = token.nextToken().trim();
 						if(tipo.equals("normal")){
-							Silla sillaNueva= new Silla(fila,numero,false);
+							Silla sillaNueva= new Silla(fila,numero,"normal");
 							cine.agregarSillas(sillaNueva);	
 						}
 						else{
-							Silla sillaNueva= new Silla(fila,numero,true);
+							Silla sillaNueva= new Silla(fila,numero,"primera");
 							cine.agregarSillas(sillaNueva);	
 						}
 						line1= input.nextLine().trim();
@@ -185,5 +192,24 @@ public class ManejoArchivos {
 		}
 		
 	}
+	
+	public static void SerializarCadenaCines(ICadenaCines miCine) throws IOException {
+		File archivo = new File("./miBanco.dat");
+		OutputStream flujo = new FileOutputStream(archivo);
+		ObjectOutputStream flujoObjetos = new ObjectOutputStream(flujo);
+		flujoObjetos.writeObject(miCine);
+		flujoObjetos.close();
+	}
+	
+	public static ICadenaCines DesserializarCadenaCines() throws ClassNotFoundException, IOException {
+		ICadenaCines cadenaC;
+		File archivo = new File("./miBanco.dat");
+		InputStream flujo = new FileInputStream(archivo);
+		ObjectInputStream flujoObjetos = new ObjectInputStream(flujo);
+		cadenaC = (CadenaCines) flujoObjetos.readObject();
+		flujoObjetos.close();		
+		return cadenaC;
+	}
+
 
 }

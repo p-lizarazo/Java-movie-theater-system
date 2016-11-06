@@ -1,11 +1,13 @@
 package co.edu.javeriana.cadenacines.negocio;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *Clase de uso para modelar la relacion 
+ *Clase abstracta para modelar la relacion 
  *entre cines y las peliculas que se presentaran en
  *el sistema
  * 
@@ -15,11 +17,15 @@ import java.util.List;
  */
 
 
-public class Funcion {
+public abstract class Funcion implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static long CONSECUTIVO = 0;
 	private long id;
-	private long tarifa;
+	protected long tarifa;
 	private LocalDateTime fecha;
 	private Cine cine;
 	private Pelicula pelicula;
@@ -34,8 +40,6 @@ public class Funcion {
 		this.cine = cine;
 		this.boletas = new ArrayList<Boleta>();
 		this.pelicula = pelicula;
-		
-		
 	}
 
 	@Override
@@ -44,12 +48,14 @@ public class Funcion {
 	}
 	
 	public String toStringSC() {
-		return ""+id+"  "+fecha+"  "+tarifa+"  "+this.cine.getSala()+"  "+"  "+this.cine.getCentro().getNombre()+" ";
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/d	H:mm");
+		return ""+id+"	"+fecha.format(formatter) +"	"+tarifa+"	"+this.cine.getSala()+"	"+this.cine.getCentro().getNombre()+"	";
 	}
 	
 	public String toStringSCPel() {
-		return "Funcion [id=" + id + ", fecha=" + fecha + ", tarifa=" + tarifa + ", sala=" + this.cine.getSala()   + ", centro=" + 
-				this.cine.getCentro().getNombre() + " " + this.pelicula.toStringSD() + "]";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/d	H:mm");
+		return ""+id+"	"+fecha.format(formatter) +"	$"+tarifa+"	";
 	}
 	
 
@@ -101,12 +107,29 @@ public class Funcion {
 		return id;
 	}
 	
+	/**
+	 * instancia una nueva boleta en el sistema
+	 * se le agrega su silla asociada, cliente y funcion
+	 * 
+	 * @param client
+	 * @param sillas
+	 */
+	
 	public void agregarBoleta(Cliente client, Silla sillas){
 		Boleta bol = new Boleta(client,sillas,this);
 		this.boletas.add(bol);
 		client.getBoletas().add(bol);
 	}
 	
+	public boolean sillaDisponible(Silla a){
+		for(Boleta boleta:boletas){
+			if(boleta.getSillas().equals(a)){
+				return false;
+			}
+		}
+		return true;
+	}
 	
+	public abstract long calcularValorBoleta();
 
 }

@@ -1,5 +1,8 @@
 package co.edu.javeriana.cadenacines.negocio;
 
+import java.io.Serializable;
+import java.util.Comparator;
+
 /**
  * Clase de uso para modelar las sillas 
  * que estan asociadas a determinado cine
@@ -9,17 +12,21 @@ package co.edu.javeriana.cadenacines.negocio;
  *
  */
 
-public class Silla {
+public class Silla implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String fila;
 	private int numero;
-	private boolean primera;
+	private String tipo;
 	
 	
-	public Silla(String fila, int numero,boolean primera) {
+	public Silla(String fila, int numero,String tipo) {
 		this.fila = fila;
 		this.numero = numero;
-		this.primera = primera;
+		this.tipo = tipo;
 		
 	
 	}
@@ -27,7 +34,11 @@ public class Silla {
 
 	@Override
 	public String toString() {
-		return String.format("%-2s  %-1d", fila,numero);
+		return String.format("%-2s %-1d", fila,numero) + " (" + tipo+")";
+	}
+	
+	public String toStringTipo(){
+		return fila + "	" + numero + "	" + tipo;
 	}
 
 
@@ -36,22 +47,22 @@ public class Silla {
 	}
 	
 	
+	/**
+	 * 
+	 * @return tipo
+	 */
+	public String getTipo() {
+		return tipo;
+	}
+
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
 	
-
 	/**
-	 * @return the primera
+	 * {@inheritDoc}
 	 */
-	public boolean isPrimera() {
-		return primera;
-	}
-
-
-	/**
-	 * @param primera the primera to set
-	 */
-	public void setPrimera(boolean primera) {
-		this.primera = primera;
-	}
 
 
 	@Override
@@ -63,7 +74,10 @@ public class Silla {
 		return result;
 	}
 
-
+	/**
+	 * {@inheritDoc}
+	 */
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -97,6 +111,8 @@ public class Silla {
 	public void setNumero(int numero) {
 		this.numero = numero;
 	}
+
+
 	
 	
 

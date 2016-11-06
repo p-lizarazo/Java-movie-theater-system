@@ -66,25 +66,6 @@ public class Utils {
 	 * @param idFuncion
 	 * @return La funcion con el id que entra como parametro, o null si no esta
 	 */
-	
-	public static Funcion buscarFuncionXId(CadenaCines cadena, long idFuncion){
-		Funcion nueva = null;
-		for(CentroComercial centros : cadena.getCentros()){
-			for(Cine cines : centros.getCines()){
-				for(Funcion funciones : cines.getFunciones()){
-					if(funciones.getId() == idFuncion){
-						nueva = funciones;
-						return nueva;
-						
-					}
-				}
-			}
-			
-		}
-		
-		
-		return nueva;
-		
-	}
+
 	
 }

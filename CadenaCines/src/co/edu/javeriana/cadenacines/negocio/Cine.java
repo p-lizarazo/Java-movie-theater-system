@@ -1,5 +1,6 @@
 package co.edu.javeriana.cadenacines.negocio;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,8 +15,12 @@ import java.util.List;
  *
  */
 
-public class Cine implements Comparable<Cine>  {
+public class Cine implements Comparable<Cine>,Serializable  {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static Long CONSECUTIVO = 0L;
 	private long id;
 	private String sala;
@@ -140,12 +145,23 @@ public class Cine implements Comparable<Cine>  {
 	 */
 	public long agregarFuncionCorriente(long tarifa, LocalDateTime fecha,Pelicula pelicula){
 		
-		Funcion a=new Funcion(tarifa,fecha,this,pelicula);
+		Funcion a=new FuncionCorriente(tarifa,fecha,this,pelicula);
 		pelicula.agregarFuncion(a);
 		this.funciones.add(a);
 		return a.getId();
 		
 	}
+
+	/**
+	 * Recibe los datos para crear una funcion de Gala
+	 * y se agrega a la lista de funciones de una pelicula recibida
+	 * 
+	 * @param tarifa
+	 * @param fecha
+	 * @param pelicula
+	 * @param trajeE
+	 * @return Id de la funcion creada, si fue creada
+	 */
 	
 	public long agregarFuncionGala(long tarifa, LocalDateTime fecha,Pelicula pelicula,boolean trajeE){
 		
@@ -155,13 +171,34 @@ public class Cine implements Comparable<Cine>  {
 		return a.getId();
 		
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
 
 	@Override
 	public int compareTo(Cine o) {
 		// TODO Auto-generated method stub
 		return this.sala.compareTo(o.sala);
 	}
-
+	
+	/**
+	 * Recorre la lista de sillas y compara si la fila y el numero
+	 * son iguales a las que se reciben si es asi se retorna
+	 * 
+	 * @param fila
+	 * @param numero
+	 * @return Objeto que corresponde a la silla buscada, o null si no esta
+	 */
+	
+	public Silla buscarSilla(String fila,int numero){
+		for(Silla silla:sillas){
+			if(silla.getFila().equals(fila) && silla.getNumero()==numero){
+				return silla;
+			}
+		}
+		return null;
+	}
 	
 	
 	
