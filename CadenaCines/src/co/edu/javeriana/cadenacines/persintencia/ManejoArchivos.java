@@ -193,8 +193,8 @@ public class ManejoArchivos {
 		
 	}
 	
-	public static void SerializarCadenaCines(ICadenaCines miCine) throws IOException {
-		File archivo = new File("./miBanco.dat");
+	public static void SerializarCadenaCines(ICadenaCines miCine,String ruta,String nombre) throws IOException {
+		File archivo = new File(ruta+"/"+nombre);
 		OutputStream flujo = new FileOutputStream(archivo);
 		ObjectOutputStream flujoObjetos = new ObjectOutputStream(flujo);
 		flujoObjetos.writeObject(miCine);

@@ -44,10 +44,14 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JSpinner;
 import javax.swing.JList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingConstants;
 
 public class TestGUIcadenaCines extends JFrame {
 	
 	private JPanel contentPane;
+	private JTextField textField;
+	private JTextField textField_1;
 
 	/**
 	 * Launch the application.
@@ -202,11 +206,49 @@ public class TestGUIcadenaCines extends JFrame {
 		agregarFuncion.add(btnRegistrar);
 		
 		JButton btnRegresar = new JButton("Regresar");
+		btnRegresar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				tabbedPane.setSelectedIndex(0);
+			
+			}
+		});
 		btnRegresar.setBounds(262, 222, 89, 23);
 		agregarFuncion.add(btnRegresar);
 		
+		textField_1 = new JTextField();
+		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_1.setBounds(152, 144, 138, 20);
+		agregarFuncion.add(textField_1);
+		textField_1.setColumns(10);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Gala", "Corriente"}));
+		comboBox.setBounds(152, 178, 91, 18);
+		agregarFuncion.add(comboBox);
+		
+		JComboBox comboBox_1 = new JComboBox();
+		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Si", "No"}));
+		comboBox_1.setBounds(333, 179, 46, 18);
+		agregarFuncion.add(comboBox_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("Etiqueta");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_2.setBounds(262, 176, 61, 19);
+		agregarFuncion.add(lblNewLabel_2);
+		
+		JComboBox comboPeliculas = new JComboBox();
+		comboPeliculas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				DefaultComboBoxModel modelo =  new DefaultComboBoxModel();
+				modelo.addElement(inicio(cadenaC));
+				comboPeliculas.setModel(modelo);
+			}
+		});
+		comboPeliculas.setBounds(152, 42, 203, 20);
+		agregarFuncion.add(comboPeliculas);
 	
 		
+				
 		JPanel consultarFuncion = new JPanel();
 		tabbedPane.addTab("Consultar funciones", null, consultarFuncion, null);
 		consultarFuncion.setLayout(null);
@@ -246,9 +288,17 @@ public class TestGUIcadenaCines extends JFrame {
 		btnSalvarDatosSistema.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					ManejoArchivos.SerializarCadenaCines(cadenaC);
-					JOptionPane.showMessageDialog(null, "Sistema guardado con éxito", "Info", JOptionPane.INFORMATION_MESSAGE);
+					JFileChooser chooser = new JFileChooser();
+					int returnVal = chooser.showSaveDialog(getParent());
+					if( returnVal == JFileChooser.APPROVE_OPTION ){
+						String pathArchivo = chooser.getSelectedFile().getParent();
+						String nombre = chooser.getSelectedFile().getName();
+						ManejoArchivos.SerializarCadenaCines(cadenaC,pathArchivo,nombre);
+						JOptionPane.showMessageDialog(null, "Sistema guardado con éxito", "Info", JOptionPane.INFORMATION_MESSAGE);
+					}
+							
 				} catch (IOException e) {
+					
 					JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				
 				}
@@ -263,7 +313,20 @@ public class TestGUIcadenaCines extends JFrame {
 		menuServicios.add(btnCargarDatosSistema);
 		
 		
+	
 		
+	}
+	public String[] inicio(ICadenaCines x){
+		String[] hola = new String[3];
+		int i = 0;
+		for (Pelicula a : ((CadenaCines) x).mostrarPeliculasSD(x).values() ){
+			hola[i] = a.toStringSD();
+			i++;
+			
+			
+		}
+		System.out.println(hola[0]+ "     " + hola[1]+"     "+ hola[2]);
+		return hola;
 		
 	}
 }
