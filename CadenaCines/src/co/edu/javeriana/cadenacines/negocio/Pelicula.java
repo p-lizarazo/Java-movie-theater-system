@@ -23,7 +23,6 @@ public class Pelicula implements Comparable<Pelicula>, Serializable {
 	private String nombre;
 	private String descripcion;
 	private List<Funcion> funciones;
-	private boolean tieneBoletas;
 	
 	
 	public Pelicula(Long codigo, String nombre, String descripcion) {

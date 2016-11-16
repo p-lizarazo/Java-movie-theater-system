@@ -24,6 +24,10 @@ public abstract class Funcion implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private static long CONSECUTIVO = 0;
+	public static void setCONSECUTIVO(long cONSECUTIVO) {
+		CONSECUTIVO = cONSECUTIVO;
+	}
+
 	private long id;
 	protected long tarifa;
 	private LocalDateTime fecha;
@@ -115,10 +119,10 @@ public abstract class Funcion implements Serializable {
 	 * @param sillas
 	 */
 	
-	public void agregarBoleta(Cliente client, Silla sillas){
-		Boleta bol = new Boleta(client,sillas,this);
-		this.boletas.add(bol);
+	public void agregarBoleta(Cliente client, Silla sillas, String fila, int numero){
+		Boleta bol= buscarBoleta(fila, numero);
 		client.getBoletas().add(bol);
+		bol.setComprada(false);
 	}
 	
 	public boolean sillaDisponible(Silla a){
@@ -131,5 +135,19 @@ public abstract class Funcion implements Serializable {
 	}
 	
 	public abstract long calcularValorBoleta();
+	
+	public Boleta buscarBoleta(String fila, int numero)
+	{
+		Boleta boletaRetornar = null;
+		List<Boleta> boletasFuncion = this.getBoletas();
+		for(Boleta actual: boletasFuncion)
+		{
+			if(actual.getSillas().getFila() == fila&& actual.getSillas().getNumero()==numero)
+			{
+				boletaRetornar = actual;
+			}
+		}
+		return boletaRetornar;
+	}
 
 }

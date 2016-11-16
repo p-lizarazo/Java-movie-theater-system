@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -22,6 +21,10 @@ public class Cine implements Comparable<Cine>,Serializable  {
 	 */
 	private static final long serialVersionUID = 1L;
 	private static Long CONSECUTIVO = 0L;
+	public static void setCONSECUTIVO(long i) {
+		CONSECUTIVO = i;
+	}
+
 	private long id;
 	private String sala;
 	private long capacidad;
@@ -143,12 +146,13 @@ public class Cine implements Comparable<Cine>,Serializable  {
 	 * @param pelicula
 	 * @return Id de la funcion creada
 	 */
-	public long agregarFuncionCorriente(long tarifa, LocalDateTime fecha,Pelicula pelicula){
+	public Funcion agregarFuncionCorriente(long tarifa, LocalDateTime fecha,Pelicula pelicula){
 		
 		Funcion a=new FuncionCorriente(tarifa,fecha,this,pelicula);
 		pelicula.agregarFuncion(a);
 		this.funciones.add(a);
-		return a.getId();
+		System.out.println(a.getId());
+		return a;
 		
 	}
 
@@ -163,12 +167,12 @@ public class Cine implements Comparable<Cine>,Serializable  {
 	 * @return Id de la funcion creada, si fue creada
 	 */
 	
-	public long agregarFuncionGala(long tarifa, LocalDateTime fecha,Pelicula pelicula,boolean trajeE){
+	public Funcion agregarFuncionGala(long tarifa, LocalDateTime fecha,Pelicula pelicula,boolean trajeE){
 		
 		Funcion a=new FuncionGala(tarifa,fecha,this,pelicula,trajeE);
 		pelicula.agregarFuncion(a);
 		this.funciones.add(a);
-		return a.getId();
+		return a;
 		
 	}
 	

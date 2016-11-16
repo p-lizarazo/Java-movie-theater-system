@@ -352,7 +352,8 @@ public class TestCadenaCines {
 			for(int i=0;i<numBoletas;i++){
 				scanner.nextLine();
 				String fila = scanner.nextLine();
-				int numero = scanner.nextInt(); 
+				int numero = scanner.nextInt();
+				
 				long valor=com.valorBoletas(cadenaX.comprarBoleta(fila,numero,func,com));
 				if(valor>0){
 					suma=suma+valor;

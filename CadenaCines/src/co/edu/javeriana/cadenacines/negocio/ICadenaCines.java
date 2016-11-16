@@ -41,4 +41,5 @@ public interface ICadenaCines extends Serializable {
 	//metodo que tomando los parametros necesario tiene toda la informacion para comprar boletas en el sistema
 	public long comprarBoleta(String fila, int numero,Funcion funcion,Cliente cliente);
 
+
 }

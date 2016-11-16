@@ -1,7 +1,6 @@
 package co.edu.javeriana.cadenacines.negocio;
 
 import java.io.Serializable;
-import java.util.Comparator;
 
 /**
  * Clase de uso para modelar las sillas 
@@ -20,10 +19,9 @@ public class Silla implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String fila;
 	private int numero;
-	private String tipo;
-	
-	
-	public Silla(String fila, int numero,String tipo) {
+	private TipoSilla tipo;
+
+	public Silla(String fila, int numero,TipoSilla tipo) {
 		this.fila = fila;
 		this.numero = numero;
 		this.tipo = tipo;
@@ -46,24 +44,6 @@ public class Silla implements Serializable {
 		return fila;
 	}
 	
-	
-	/**
-	 * 
-	 * @return tipo
-	 */
-	public String getTipo() {
-		return tipo;
-	}
-
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-
 
 	@Override
 	public int hashCode() {
@@ -111,9 +91,22 @@ public class Silla implements Serializable {
 	public void setNumero(int numero) {
 		this.numero = numero;
 	}
-
-
 	
+
+	/**
+	 * @return the tipo
+	 */
+	public TipoSilla getTipo() {
+		return tipo;
+	}
+
+
+	/**
+	 * @param tipo the tipo to set
+	 */
+	public void setTipo(TipoSilla tipo) {
+		this.tipo = tipo;
+	}
 	
 
 }

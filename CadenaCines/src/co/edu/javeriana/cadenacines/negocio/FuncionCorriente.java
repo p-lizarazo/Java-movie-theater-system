@@ -3,8 +3,6 @@ package co.edu.javeriana.cadenacines.negocio;
 
 import java.time.LocalDateTime;
 
-import java.time.format.DateTimeFormatter;
-
 /**
  * Clase concreta que extiende de Funcion para modelar
  * las funciones corrientes dentro del sitema
@@ -15,6 +13,11 @@ import java.time.format.DateTimeFormatter;
  */
 
 public class FuncionCorriente extends Funcion{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public FuncionCorriente(long tarifa, LocalDateTime fecha, Cine cine, Pelicula pelicula) {
 		super(tarifa, fecha, cine, pelicula);

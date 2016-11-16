@@ -1,8 +1,13 @@
 package co.edu.javeriana.cadenacines.negocio;
 
-import java.time.format.DateTimeFormatter;
-
 public class ClienteParticular extends Cliente {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
 
 	public ClienteParticular(String nombre, String email) {
 		super(nombre, email);

@@ -2,7 +2,6 @@ package co.edu.javeriana.cadenacines.negocio;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -21,6 +20,10 @@ public abstract class Cliente implements Comparable<Cliente>,Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private static int CONSECUTIVO = 0;
+	public static void setCONSECUTIVO(int cONSECUTIVO) {
+		CONSECUTIVO = cONSECUTIVO;
+	}
+
 	private long id;
 	private String nombre;
 	private String email;
@@ -116,7 +119,7 @@ public abstract class Cliente implements Comparable<Cliente>,Serializable{
 	
 	@Override
 	public String toString() {
-		return id + "	" + nombre;
+		return id + " - " + nombre;
 	}
 
 	public abstract String toString8();

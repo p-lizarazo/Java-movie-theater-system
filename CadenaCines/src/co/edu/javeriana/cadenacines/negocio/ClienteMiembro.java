@@ -15,6 +15,10 @@ import java.time.format.DateTimeFormatter;
 public class ClienteMiembro extends Cliente{
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private LocalDate fechaMembresia;
 
 	public ClienteMiembro(String nombre, String email,LocalDate fecha) {

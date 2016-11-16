@@ -3,7 +3,6 @@ package co.edu.javeriana.cadenacines.negocio;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -32,12 +31,12 @@ public class CadenaCines implements ICadenaCines {
 	private String nombre;
 	private List<CentroComercial> centros;
 	private Map<Long,Pelicula> peliculas;
-	private Collection<Cliente> clientes;
+	private List<Cliente> clientes;
 	public CadenaCines(String nombre) {
 		this.nombre = nombre;
 		this.centros = new ArrayList<CentroComercial>();
 		this.peliculas = new HashMap<Long,Pelicula>();
-		this.clientes = new HashSet<Cliente>();
+		this.clientes = new ArrayList<Cliente>();
 	}
 
 	@Override
@@ -65,11 +64,11 @@ public class CadenaCines implements ICadenaCines {
 		this.peliculas = peliculas;
 	}
 
-	public Collection<Cliente> getClientes() {
+	public List<Cliente> getClientes() {
 		return clientes;
 	}
 
-	public void setClientes(Collection<Cliente> clientes) {
+	public void setClientes(List<Cliente> clientes) {
 		this.clientes = clientes;
 	}
 
@@ -205,8 +204,15 @@ public class CadenaCines implements ICadenaCines {
 	public long agregarFuncionGala(long codigo,long idCine,String fecha,String hora, long tarifa, boolean trajeE) {
 		Cine a=this.buscarCine(idCine);
 		Pelicula b=this.buscarPelicula(codigo);
+		List<Silla> sillasCine = (List<Silla>) a.getSillas();
 		if(a!=null && b!=null){
-			return a.agregarFuncionGala(tarifa, LocalDateTime.of(Utils.convertirStringFecha(fecha),Utils.convertirStringHora(hora)),b,trajeE);
+			Funcion funcionNueva = a.agregarFuncionGala(tarifa, LocalDateTime.of(Utils.convertirStringFecha(fecha),Utils.convertirStringHora(hora)),b,trajeE);
+			for(Silla actual: sillasCine)
+			{
+				Boleta nuevaBoleta = new Boleta(null, actual, funcionNueva);
+				funcionNueva.getBoletas().add(nuevaBoleta);
+			}
+			return funcionNueva.getId();
 		} else {
 			return -1;
 			//Si retorna -1 significa que no se pudo agregar la funcion
@@ -222,8 +228,15 @@ public class CadenaCines implements ICadenaCines {
 	public long agregarFuncionCorriente(long codigo,long idCine,String fecha,String hora, long tarifa) {
 		Cine a=this.buscarCine(idCine);
 		Pelicula b=this.buscarPelicula(codigo);
+		List<Silla> sillasCine = (List<Silla>) a.getSillas();
 		if(a!=null && b!=null){
-			return a.agregarFuncionCorriente(tarifa, LocalDateTime.of(Utils.convertirStringFecha(fecha),Utils.convertirStringHora(hora)),b);
+			Funcion nuevaFuncion = a.agregarFuncionCorriente(tarifa, LocalDateTime.of(Utils.convertirStringFecha(fecha),Utils.convertirStringHora(hora)),b);
+			for(Silla actual: sillasCine)
+			{
+				Boleta nuevaBoleta = new Boleta(null, actual, nuevaFuncion);
+				nuevaFuncion.getBoletas().add(nuevaBoleta);
+			}
+			return nuevaFuncion.getId();
 		} else {
 			return -1;
 			//Si retorna -1 significa que no se pudo agregar la funcion
@@ -261,16 +274,12 @@ public class CadenaCines implements ICadenaCines {
 	public long comprarBoleta(String fila, int numero, Funcion funcion, Cliente cliente) {
 		Silla a=funcion.getCine().buscarSilla(fila, numero);
 		if(a!=null){
-			if(funcion.sillaDisponible(a)){
-				funcion.agregarBoleta(cliente, a);
-				if(a.getTipo()=="primera"){
+				funcion.agregarBoleta(cliente, a, fila, numero);
+				if(a.getTipo().equals(TipoSilla.PRIMERA)){
 					return (long) (funcion.calcularValorBoleta()+funcion.calcularValorBoleta()*0.3);
 				} else{
 					return funcion.calcularValorBoleta();
 				}
-			} else {
-				return 0;
-			}	
 		}
 		
 		return 0;
@@ -282,7 +291,62 @@ public class CadenaCines implements ICadenaCines {
 		return pelis;
 		
 	}
-
-
+	
+	public boolean buscarNombreSala(String nombreSala, List<Cine> nuevosCines)
+	{
+		boolean estado = false;
+		for(Cine actual: nuevosCines)
+		{
+			if(actual.getSala().equalsIgnoreCase(nombreSala))
+			{
+				estado = true;
+			}
+		}
+	
+		return estado;
+	}
+	
+	public boolean buscarCentro(CentroComercial centroNuevo)
+	{
+		boolean estado = false;
+		List<CentroComercial> centrosComerciales = (List<CentroComercial>) this.getCentros();
+		String nombreCentro = centroNuevo.getNombre();
+		for(CentroComercial actual: centrosComerciales)
+		{
+			if(actual.getNombre().equalsIgnoreCase(nombreCentro))
+			{
+				estado = true;
+			}
+		}
+		return estado;
+	}
+	
+	public boolean buscarCliente(String nombre)
+	{
+		boolean estado = false;
+		List<Cliente> clientes = (List<Cliente>) this.getClientes();
+		for(Cliente actual: clientes)
+		{
+			if(actual.getNombre().equalsIgnoreCase(nombre))
+			{
+				estado = true;
+			}
+		}
+		return estado;
+	}
+	
+	public boolean buscarPelicula(String nombre)
+	{
+		boolean estado = false;
+		Map<Long, Pelicula> peliculas = this.getPeliculas();
+		for(Pelicula actual: peliculas.values())
+		{
+			if(actual.getNombre().equalsIgnoreCase(nombre))
+			{
+				estado = true;
+			}
+		}
+		return estado;	
+	}
 	
 }

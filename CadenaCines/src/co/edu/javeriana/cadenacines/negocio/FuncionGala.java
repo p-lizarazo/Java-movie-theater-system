@@ -13,6 +13,10 @@ import java.time.LocalDateTime;
 
 public class FuncionGala extends Funcion {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean trajeEtiqueta ;
 
 	public FuncionGala(long tarifa, LocalDateTime fecha, Cine cine, Pelicula pelicula,boolean trajeEtiqueta) {
